@@ -19,3 +19,12 @@ of finance and completely neglected the **saving part**. To me an application th
 financial life into account including mortgages, cars, stock, and more is exciting. With every wider use of **apple pay/
 google pay** this application can eventually be designed to take data from those paying methods so people don’t have to
 manually enter their spending.  
+
+
+
+### User Stories
+
+- As a user, I want to be able to add a purchase to a spendingCategory (food, drinks, etc)
+- As a user, I want to be able to see the total sum of money spend in one spending Category
+- As a user, I want to be able to add money to savings
+- As a user, I want to be able to have a monthly report of spending and savings.
