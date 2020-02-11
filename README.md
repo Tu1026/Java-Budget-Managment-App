@@ -24,7 +24,7 @@ manually enter their spending.
 
 ### User Stories
 
-- As a user, I want to be able to add a purchase to a spendingCategory (food, drinks, etc)
+- As a user, I want to be able to add a purchase to a categories (needs, wants, regrets)
 - As a user, I want to be able to see the total sum of money spend in one spending Category
 - As a user, I want to be able to add money to savings
 - As a user, I want to be able to have a monthly report of spending and savings.
