@@ -1,7 +1,6 @@
 package categories;
 
 import model.Purchase;
-import model.SpendingCategory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,6 +18,7 @@ public abstract class CategoryTest {
         uselessPen = new Purchase("Pen", 1);
         phone = new Purchase("Phone", 800 );
     }
+
 
     @Test
     public void testAddToCatAndGetFirstInCat() {

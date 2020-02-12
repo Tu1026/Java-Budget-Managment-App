@@ -26,5 +26,5 @@ manually enter their spending.
 
 - As a user, I want to be able to add a purchase to a categories (needs, wants, regrets)
 - As a user, I want to be able to see the total sum of money spend in one spending Category
-- As a user, I want to be able to add money to savings
-- As a user, I want to be able to add a goal to a list of goals.
+- As a user, I want to be able to add money to savings and my saving account can grow according to interest rate
+- As a user, I want to be able to add a goal to a list of goals that I have for things I want to buy

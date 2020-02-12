@@ -2,9 +2,9 @@ package model;
 
 //Represents something the use want that have a value and how much the user wants it
 public class Goal {
-    String name;
-    double price;
-    int desire;
+    public String name;
+    public double price;
+    public int desire;
 
     //REQUIRES:  0 <= i <= 10, d must be non negative
     //EFFECTS: A goal has its name, price, and on a scale of 1-10 how much the user wants it

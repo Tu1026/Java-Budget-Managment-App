@@ -15,9 +15,17 @@ public class Savings {
     }
 
     //MODIFIES: This
-    //EFFECTS: Take out or put in money to the saving
-    public void savingTransaction(double m) {
-        savings = savings + m;
+    //EFFECTS: Take out or put in money to the saving if savings + m >= 0 and return true
+    //         return false and leave savings untouched
+    public boolean savingTransaction(double m) {
+        boolean state;
+        if ((savings + m) >= 0) {
+            savings = savings + m;
+            state = true;
+        } else {
+            state = false;
+        }
+        return state;
     }
 
     //REQUITES: The interest rate in decimal (eg. 10% = 0.1) and > 0
