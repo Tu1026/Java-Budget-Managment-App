@@ -1,4 +1,4 @@
-package model;
+package account;
 
 //This class represents the amount of money saved in dollars
 public class Savings {

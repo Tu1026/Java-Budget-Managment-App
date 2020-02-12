@@ -4,6 +4,7 @@ import model.Purchase;
 
 import java.util.LinkedList;
 
+//A category contains many purchases within it
 public abstract class Category {
     public LinkedList<Purchase> cat;
 
