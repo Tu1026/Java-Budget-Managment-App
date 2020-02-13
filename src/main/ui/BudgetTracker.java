@@ -5,7 +5,6 @@ import categories.Category;
 import categories.Needs;
 import categories.Regrets;
 import categories.Wants;
-import exceptions.DesireNotValidException;
 import model.Goal;
 import model.Goals;
 import model.Purchase;
@@ -27,6 +26,7 @@ public class BudgetTracker {
     }
 
     //Reference from the tellerApp class code
+    // EFFECTS: Start the main menu of the application and take user inputs
     public void runBudgetTracker() {
         boolean keepGoing = true;
         String command = null;
@@ -66,11 +66,7 @@ public class BudgetTracker {
         } else if (command.equals("s")) {
             doSavings();
         } else if (command.equals("g")) {
-            try {
-                doAddGoals();
-            } catch (DesireNotValidException e) {
-                System.out.println("Input desire not valid!!");
-            }
+            doAddGoals();
         } else if (command.equals("c")) {
             doCategory();
         } else {
@@ -109,7 +105,7 @@ public class BudgetTracker {
         savings.savingInterests(interest);
     }
 
-    public void doAddGoals() throws DesireNotValidException {
+    public void doAddGoals() {
         System.out.println("What is a financial goal you have");
         input.nextLine();
         String name = input.nextLine();
@@ -118,10 +114,11 @@ public class BudgetTracker {
         System.out.println("On a scale of 1 - 10 how much do you want it?");
         int desire = input.nextInt();
         if ((desire > 10) | (desire < 0)) {
-            throw new DesireNotValidException();
+            System.out.println("Too much or too less desire!!");
+        } else {
+            Goal newGoal = new Goal(name, cost, desire);
+            goals.addToGoals(newGoal);
         }
-        Goal newGoal = new Goal(name, cost, desire);
-        goals.addToGoals(newGoal);
     }
 
     public void doCategory() {
