@@ -5,7 +5,6 @@ import categories.Category;
 import categories.Needs;
 import categories.Regrets;
 import categories.Wants;
-import com.sun.xml.internal.ws.api.ha.StickyFeature;
 import exceptions.DesireNotValidException;
 import model.Goal;
 import model.Goals;
@@ -155,7 +154,21 @@ public class BudgetTracker {
         }
     }
 
-    public void doCategoryList(){
+    public void doCategoryList() {
+        System.out.println("\nSelect from");
+        System.out.println("\tn -> Check all purchases in need");
+        System.out.println("\tr -> Check all purchases in regrets");
+        System.out.println("\tw -> Check all purchases in wants");
+        String code = input.next();
+        if (code.equals("n")) {
+            System.out.println("All purchases are" + needs.getListOfPurchases());
+        } else if (code.equals("r")) {
+            System.out.println("All purchases are" + regrets.getListOfPurchases());
+        } else if (code.equals("w")) {
+            System.out.println("All purchases are" + wants.getListOfPurchases());
+        } else {
+            System.out.println("Invalid input");
+        }
     }
 }
 
