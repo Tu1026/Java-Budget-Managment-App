@@ -26,7 +26,7 @@ public class BudgetTracker {
     }
 
     //Reference from the tellerApp class code
-    // EFFECTS: Start the main menu of the application and take user inputs
+    //EFFECTS: Start the main menu of the application and take user inputs
     public void runBudgetTracker() {
         boolean keepGoing = true;
         String command = null;
@@ -52,14 +52,20 @@ public class BudgetTracker {
         System.out.println("\nGoodbye!");
     }
 
+    //Reference from the teller app
+    //EFFECTS: Display a list of input options a user can choose from
     public void displayMenu() {
         System.out.println("\nSelect from");
-        System.out.println("\tp -> add a new purchase");
-        System.out.println("\ts -> put money in your savings");
-        System.out.println("\tg -> add a goal");
-        System.out.println("\tc -> check categories");
+        System.out.println("\tp -> Add a new purchase");
+        System.out.println("\ts -> Put money in your savings");
+        System.out.println("\tg -> Add a goal");
+        System.out.println("\tc -> Check categories");
+        System.out.println("\ta -> Check all goals");
+        System.out.println("\tm -> Check money in savings");
     }
 
+    //Reference from the teller app
+    //EFFECTS: Takes the user to different functionality according to input command
     public void processCommand(String command) {
         if (command.equals("p")) {
             doPurchase();
@@ -69,11 +75,22 @@ public class BudgetTracker {
             doAddGoals();
         } else if (command.equals("c")) {
             doCategory();
+        } else if (command.equals("a")) {
+            doCheckAllGoals();
+        } else if (command.equals("m")) {
+            doDisplaySavings();
         } else {
             System.out.println("Invalid input");
         }
     }
 
+    //EFFECTS: Prints the current balance in user's saving account
+    public void doCheckAllGoals() {
+        System.out.println("Your goals are" + "\n" + goals.getAllGoals());
+    }
+
+    //MODIFIES: This
+    //EFFECT: Add new purchases with the given properties from the user and add it to one of the three categories
     public void doPurchase() {
         System.out.println("What did you buy!?");
         input.nextLine();
@@ -96,6 +113,8 @@ public class BudgetTracker {
         }
     }
 
+    //MODIFIES: This
+    //EFFECTS: Add money to the savings and increase the money in the savings according to interest rate
     public void doSavings() {
         System.out.println("How much money are you saving this time?");
         Double amount = input.nextDouble();
@@ -105,6 +124,8 @@ public class BudgetTracker {
         savings.savingInterests(interest);
     }
 
+    //MODIFIES:This
+    //EFFECTS: Add a goal with given properties from the user to a list of goals
     public void doAddGoals() {
         System.out.println("What is a financial goal you have");
         input.nextLine();
@@ -121,19 +142,22 @@ public class BudgetTracker {
         }
     }
 
+    //EFFECTS: Take user to different functionality of about category according to their input
     public void doCategory() {
         System.out.println("\nSelect from");
         System.out.println("\ts -> Check total money spent in a category");
         System.out.println("\tp -> List all purchases in a category");
-        System.out.println("\tr -> Remove all items in a category");
         String code = input.next();
         if (code.equals("s")) {
             doCategorySum();
         } else if (code.equals("p")) {
             doCategoryList();
+        } else {
+            System.out.println("Invalid input!!");
         }
     }
 
+    //EFFECTS: Return the total money spent in respective category given user input
     public void doCategorySum() {
         System.out.println("\nSelect from");
         System.out.println("\tn -> Check total money spent in need");
@@ -151,6 +175,7 @@ public class BudgetTracker {
         }
     }
 
+    //EFFECTS: Return all the purchases made in a given category given a user input
     public void doCategoryList() {
         System.out.println("\nSelect from");
         System.out.println("\tn -> Check all purchases in need");
@@ -166,6 +191,14 @@ public class BudgetTracker {
         } else {
             System.out.println("Invalid input");
         }
+    }
+
+    //EFFECTS: Return the amount of money the user has in the savings
+    public void doDisplaySavings() {
+        Double saving = savings.getSavings();
+        String savingString = saving.toString();
+
+        System.out.println("You have " + savingString + "$ in your savings");
     }
 }
 

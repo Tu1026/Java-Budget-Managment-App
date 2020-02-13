@@ -14,9 +14,9 @@ public class GoalsTest {
     @BeforeEach
     public void setup() {
         testGoals = new Goals();
-        phone = new Goal("phone", 800, 10);
-        car = new Goal("car", 20000, 7);
-        textbook = new Goal("textbook", 70, 0);
+        phone = new Goal("Phone", 800, 10);
+        car = new Goal("Car", 20000, 7);
+        textbook = new Goal("Textbook", 70, 0);
     }
 
     @Test
@@ -40,9 +40,17 @@ public class GoalsTest {
         testGoals.addToGoals(car);
         testGoals.addToGoals(textbook);
         assertEquals(phone, testGoals.getIthGoal(1));
-        assertEquals(car,testGoals.getIthGoal(2));
+        assertEquals(car, testGoals.getIthGoal(2));
         assertEquals(textbook, testGoals.getIthGoal(3));
     }
 
+    @Test
+    public void testGetAllGoals() {
+        testGoals.addToGoals(phone);
+        testGoals.addToGoals(car);
+        testGoals.addToGoals(textbook);
+        assertEquals("Phone, 800.0$, 10 desire points" + "\n" + "Car, 20000.0$, 7 desire points"
+                + "\n" + "Textbook, 70.0$, 0 desire points" + "\n", testGoals.getAllGoals());
+    }
 
 }

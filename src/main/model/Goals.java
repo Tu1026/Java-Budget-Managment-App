@@ -30,4 +30,17 @@ public class Goals {
         return goals.get(i - 1);
     }
 
+    //REQUIRES: Non empty list of goals
+    //EFFECTS: Return all the names, costs, and desires for all goals in the list of goals as a string
+    public String getAllGoals() {
+        String goals = "";
+        for (Goal g : this.goals) {
+            Double price = g.getPrice();
+            String priceString = price.toString();
+            Integer desire = g.getDesire();
+            String desireString = desire.toString();
+            goals = goals + g.getName() + ", " + priceString + "$, " + desireString + " desire points\n";
+        }
+        return goals;
+    }
 }
