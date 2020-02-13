@@ -58,6 +58,7 @@ public class BudgetTracker {
         System.out.println("\tp -> add a new purchase");
         System.out.println("\ts -> put money in your savings");
         System.out.println("\tg -> add a goal");
+        System.out.println("\tc -> check categories");
     }
 
     public void processCommand(String command) {
@@ -71,6 +72,8 @@ public class BudgetTracker {
             } catch (DesireNotValidException e) {
                 System.out.println("Input desire not valid!!");
             }
+        } else if (command.equals("c")) {
+            doCategory();
         } else {
             System.out.println("Invalid input");
         }
@@ -79,7 +82,7 @@ public class BudgetTracker {
     public void doPurchase() {
         System.out.println("What did you buy!?");
         input.nextLine();
-        String name = input.next();
+        String name = input.nextLine();
         System.out.println("How much was it?");
         double amount = input.nextDouble();
         System.out.println("What category does it belong? (Needs, Regrets, Wants)");
@@ -109,7 +112,8 @@ public class BudgetTracker {
 
     public void doAddGoals() throws DesireNotValidException {
         System.out.println("What is a financial goal you have");
-        String goal = input.next();
+        input.nextLine();
+        String name = input.nextLine();
         System.out.println("How much does it cost?");
         Double cost = input.nextDouble();
         System.out.println("On a scale of 1 - 10 how much do you want it?");
@@ -117,6 +121,41 @@ public class BudgetTracker {
         if ((desire > 10) | (desire < 0)) {
             throw new DesireNotValidException();
         }
+        Goal newGoal = new Goal(name, cost, desire);
+        goals.addToGoals(newGoal);
+    }
+
+    public void doCategory() {
+        System.out.println("\nSelect from");
+        System.out.println("\ts -> Check total money spent in a category");
+        System.out.println("\tp -> List all purchases in a category");
+        System.out.println("\tr -> Remove all items in a category");
+        String code = input.next();
+        if (code.equals("s")) {
+            doCategorySum();
+        } else if (code.equals("p")) {
+            doCategoryList();
+        }
+    }
+
+    public void doCategorySum() {
+        System.out.println("\nSelect from");
+        System.out.println("\tn -> Check total money spent in need");
+        System.out.println("\tr -> Check total money spent in regrets");
+        System.out.println("\tw -> Check total money spent in wants");
+        String code = input.next();
+        if (code.equals("n")) {
+            System.out.println(needs.sumOfCat());
+        } else if (code.equals("r")) {
+            System.out.println(regrets.sumOfCat());
+        } else if (code.equals("w")) {
+            System.out.println(wants.sumOfCat());
+        } else {
+            System.out.println("Invalid input");
+        }
+    }
+
+    public void doCategoryList(){
     }
 }
 

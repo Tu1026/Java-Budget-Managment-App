@@ -36,4 +36,13 @@ public abstract class Category {
         return cat.get(i - 1);
     }
 
+    //REQUIRES: Non empty category
+    //EFFECTS: Return the names of all purchases in a category
+    public String getListOfPurchases() {
+        String allName = "";
+        for (Purchase p : cat) {
+            allName = allName + p.getItemName() + "\n";
+        }
+        return allName;
+    }
 }

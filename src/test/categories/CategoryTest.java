@@ -48,5 +48,13 @@ public abstract class CategoryTest {
         assertEquals(810.5,testCat.sumOfCat());
     }
 
+    @Test
+    public void testGetAllItemNames() {
+        testCat.addToCat(food);
+        testCat.addToCat(uselessPen);
+        testCat.addToCat(phone);
+        assertEquals("Food" + "\n" + "Pen" + "\n" + "Phone" +"\n", testCat.getListOfPurchases());
+    }
+
 
 }
