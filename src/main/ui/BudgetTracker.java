@@ -2,6 +2,9 @@ package ui;
 
 import account.Savings;
 import categories.Category;
+import categories.Needs;
+import categories.Regrets;
+import categories.Wants;
 import com.sun.xml.internal.ws.api.ha.StickyFeature;
 import exceptions.DesireNotValidException;
 import model.Goal;
@@ -29,6 +32,11 @@ public class BudgetTracker {
         boolean keepGoing = true;
         String command = null;
         input = new Scanner(System.in);
+        needs = new Needs();
+        regrets = new Regrets();
+        wants = new Wants();
+        savings = new Savings();
+        goals = new Goals();
 
         while (keepGoing) {
             displayMenu();
@@ -70,11 +78,13 @@ public class BudgetTracker {
 
     public void doPurchase() {
         System.out.println("What did you buy!?");
+        input.nextLine();
         String name = input.next();
         System.out.println("How much was it?");
         double amount = input.nextDouble();
         System.out.println("What category does it belong? (Needs, Regrets, Wants)");
         String category = input.next();
+
         category.toLowerCase();
         Purchase newPurchase = new Purchase(name, amount);
         if (category.equals("needs")) {
