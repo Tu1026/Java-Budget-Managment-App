@@ -6,6 +6,6 @@ public class WantsTest extends CategoryTest {
 
     @BeforeEach
     public void setUp() {
-        testCat = new Needs();
+        testCat = new Wants();
     }
 }
