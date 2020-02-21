@@ -1,7 +1,11 @@
 package account;
 
+import persistence.Savable;
+
+import java.io.PrintWriter;
+
 //This class represents the amount of money saved in dollars
-public class Savings {
+public class Savings implements Savable {
     double savings;
 
     //EFFECTS: Construct a saving account with 0 dollars to start
@@ -33,5 +37,18 @@ public class Savings {
     //EFFECTS: Grow the saving by interest rate
     public void savingInterests(double i) {
         savings = savings * (1 + i);
+    }
+
+    // MODIFIES: printWriter
+    // EFFECTS: writes the saveable to printWriter
+    @Override
+    public void save(PrintWriter printWriter) {
+        printWriter.print(nextAccountId);
+        printWriter.print(Reader.DELIMITER);
+        printWriter.print(id);
+        printWriter.print(Reader.DELIMITER);
+        printWriter.print(name);
+        printWriter.print(Reader.DELIMITER);
+        printWriter.println(balance);
     }
 }
