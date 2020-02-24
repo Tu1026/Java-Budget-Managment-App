@@ -1,11 +1,13 @@
 package categories;
 
 import model.Purchase;
+import persistence.Saveable;
 
+import java.io.PrintWriter;
 import java.util.LinkedList;
 
 //A category contains many purchases within it
-public abstract class Category {
+public abstract class Category implements Saveable {
     public LinkedList<Purchase> cat;
 
 
@@ -44,5 +46,10 @@ public abstract class Category {
             allName = allName + p.getItemName() + "\n";
         }
         return allName;
+    }
+
+    @Override
+    public void save(PrintWriter printWriter) {
+        printWriter.print();
     }
 }
