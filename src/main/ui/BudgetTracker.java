@@ -8,11 +8,14 @@ import categories.Wants;
 import model.Goal;
 import model.Goals;
 import model.Purchase;
+import persistence.Reader;
 import persistence.Writer;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 import java.util.Scanner;
 
 //Budget tracker application　(Reference from the UI code in the tellerApp)
@@ -42,6 +45,8 @@ public class BudgetTracker {
         savings = new Savings();
         goals = new Goals();
 
+        loadAccounts();
+
         while (keepGoing) {
             displayMenu();
             command = input.next();
@@ -57,18 +62,49 @@ public class BudgetTracker {
         System.out.println("\nGoodbye!");
     }
 
+    // MODIFIES: this
+    // EFFECTS: loads accounts from ACCOUNTS_FILE, if that file exists;
+    // otherwise initializes accounts with default values
+    private void loadAccounts() {
+        try {
+            List<Category> cats = Reader.readCategory(new File(BUDGET_FILE));
+            needs = cats.get(0);
+            regrets = cats.get(1);
+            wants = cats.get(2);
+            savings = Reader.readSavings(new File(BUDGET_FILE));
+            goals = Reader.readGoals(new File(BUDGET_FILE));
+        } catch (IOException e) {
+            init();
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: initializes a empty budget tracker
+    private void init() {
+        needs = new Needs();
+        regrets = new Regrets();
+        wants = new Wants();
+        savings = new Savings();
+        goals = new Goals();
+    }
+
     //Reference code from teller app
     // EFFECTS: saves state of Categories, Savings, and Goals to BUDGET_FILE
     private void saveAccounts() {
         try {
             Writer writer = new Writer(new File(BUDGET_FILE));
             writer.write(needs);
+            writer.lineBreak();
             writer.write(regrets);
+            writer.lineBreak();
             writer.write(wants);
+            writer.lineBreak();
             writer.write(savings);
+            writer.lineBreak();
             writer.write(goals);
+            writer.lineBreak();
             writer.close();
-            System.out.println("Purchases, Savings and Goals " + BUDGET_FILE);
+            System.out.println("Purchases, Savings and Goals are saved to " + BUDGET_FILE);
         } catch (FileNotFoundException e) {
             System.out.println("Unable to save to " + BUDGET_FILE);
         } catch (UnsupportedEncodingException e) {
@@ -87,6 +123,7 @@ public class BudgetTracker {
         System.out.println("\tc -> Check categories");
         System.out.println("\ta -> Check all goals");
         System.out.println("\tm -> Check money in savings");
+        System.out.println("\tr -> Save everything about the budget tracker to file");
     }
 
     //Reference from the teller app
@@ -104,6 +141,8 @@ public class BudgetTracker {
             doCheckAllGoals();
         } else if (command.equals("m")) {
             doDisplaySavings();
+        } else if (command.equals("r")) {
+            saveAccounts();
         } else {
             System.out.println("Invalid input");
         }

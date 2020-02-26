@@ -17,7 +17,7 @@ public class Goals implements Saveable {
 
     //MODIFIES: This
     //EFFECTS: add a goal to the list of goals
-    public void  addToGoals(Goal goal) {
+    public void addToGoals(Goal goal) {
         goals.add(goal);
     }
 
@@ -52,7 +52,13 @@ public class Goals implements Saveable {
     // EFFECTS: writes the saveable to printWriter
     @Override
     public void save(PrintWriter printWriter) {
-        printWriter.print(goals);
-        printWriter.print(Reader.DELIMITER);
+        for (Goal g : goals) {
+            printWriter.print(g.getName());
+            printWriter.print(Reader.DELIMITER_1);
+            printWriter.print(g.getPrice());
+            printWriter.print(Reader.DELIMITER_1);
+            printWriter.print(g.getDesire());
+            printWriter.print(Reader.DELIMITER);
+        }
     }
 }

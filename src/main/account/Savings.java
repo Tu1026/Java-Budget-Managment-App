@@ -8,7 +8,6 @@ import java.io.PrintWriter;
 //This class represents the amount of money saved in dollars
 public class Savings implements Saveable {
     double savings;
-    double interest;
 
     //EFFECTS: Construct a saving account with 0 dollars to start
     public Savings() {

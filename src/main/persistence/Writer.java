@@ -21,6 +21,12 @@ public class Writer {
         saveable.save(printWriter);
     }
 
+    //MODIFIES: this
+    //EFFECTS: writes a line break to the file
+    public void lineBreak() {
+        printWriter.print("\n");
+    }
+
     // MODIFIES: this
     // EFFECTS: close print writer
     // NOTE: you MUST call this method when you are done writing data!
