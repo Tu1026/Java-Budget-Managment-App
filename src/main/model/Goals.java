@@ -1,9 +1,13 @@
 package model;
 
+import persistence.Reader;
+import persistence.Saveable;
+
+import java.io.PrintWriter;
 import java.util.LinkedList;
 
 //Goals have a list of goals within it
-public class Goals {
+public class Goals implements Saveable {
     public LinkedList<Goal> goals;
 
     //EFFECTS: Construct a list of empty goals to begin with
@@ -42,5 +46,13 @@ public class Goals {
             goals = goals + g.getName() + ", " + priceString + "$, " + desireString + " desire points\n";
         }
         return goals;
+    }
+
+    // MODIFIES: printWriter
+    // EFFECTS: writes the saveable to printWriter
+    @Override
+    public void save(PrintWriter printWriter) {
+        printWriter.print(goals);
+        printWriter.print(Reader.DELIMITER);
     }
 }

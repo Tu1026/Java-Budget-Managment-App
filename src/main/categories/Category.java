@@ -1,6 +1,7 @@
 package categories;
 
 import model.Purchase;
+import persistence.Reader;
 import persistence.Saveable;
 
 import java.io.PrintWriter;
@@ -48,8 +49,15 @@ public abstract class Category implements Saveable {
         return allName;
     }
 
+    // MODIFIES: printWriter
+    // EFFECTS: writes the saveable to printWriter
     @Override
     public void save(PrintWriter printWriter) {
-        printWriter.print();
+        for (Purchase p : cat) {
+            printWriter.print(p.getItemName());
+            printWriter.print(Reader.DELIMITER_1);
+            printWriter.print(p.getAmount());
+            printWriter.print(Reader.DELIMITER);
+        }
     }
 }

@@ -8,11 +8,16 @@ import categories.Wants;
 import model.Goal;
 import model.Goals;
 import model.Purchase;
+import persistence.Writer;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
 import java.util.Scanner;
 
 //Budget tracker application　(Reference from the UI code in the tellerApp)
 public class BudgetTracker {
+    private static final String BUDGET_FILE = "./data/budget.txt";
     private Category needs;
     private Category regrets;
     private Category wants;
@@ -50,6 +55,26 @@ public class BudgetTracker {
         }
 
         System.out.println("\nGoodbye!");
+    }
+
+    //Reference code from teller app
+    // EFFECTS: saves state of Categories, Savings, and Goals to BUDGET_FILE
+    private void saveAccounts() {
+        try {
+            Writer writer = new Writer(new File(BUDGET_FILE));
+            writer.write(needs);
+            writer.write(regrets);
+            writer.write(wants);
+            writer.write(savings);
+            writer.write(goals);
+            writer.close();
+            System.out.println("Purchases, Savings and Goals " + BUDGET_FILE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to save to " + BUDGET_FILE);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            // this is due to a programming error
+        }
     }
 
     //Reference from the teller app

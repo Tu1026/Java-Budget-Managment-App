@@ -1,5 +1,10 @@
 package persistence;
 
+import categories.Category;
+import categories.Needs;
+import model.Goals;
+import model.Purchase;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,12 +16,28 @@ import java.util.List;
 //A reader reads different data from a file
 public class Reader {
     public static final String DELIMITER = ",";
+    public static final String DELIMITER_1 = ";";
 
     // EFFECTS: returns a list of accounts parsed from file; throws
     // IOException if an exception is raised when opening / reading from file
-    public static List<Account> readAccounts(File file) throws IOException {
+    public static List<Category> readCategory(File file) throws IOException {
         List<String> fileContent = readFile(file);
-        return parseContent(fileContent);
+        return parseContentCategory(fileContent);
+    }
+
+    // EFFECTS: returns a list of accounts parsed from file; throws
+    // IOException if an exception is raised when opening / reading from file
+    public static Double readSavings(File file) throws IOException {
+        List<String> fileContent = readFile(file);
+        Double savings = Double.parseDouble(fileContent.get(3));
+        return savings;
+    }
+
+    // EFFECTS: returns a list of accounts parsed from file; throws
+    // IOException if an exception is raised when opening / reading from file
+    public static Goals readGoals(File file) throws IOException {
+        List<String> fileContent = readFile(file);
+        return parseContentCategory(fileContent);
     }
 
     // EFFECTS: returns content of file as a list of strings, each string
@@ -27,15 +48,34 @@ public class Reader {
 
     // EFFECTS: returns a list of accounts parsed from list of strings
     // where each string contains data for one account
-    private static List<Account> parseContent(List<String> fileContent) {
-        List<Account> accounts = new ArrayList<>();
+    private static List<Category> parseContentCategory(List<String> fileContent) {
+        List<Category> cats = new ArrayList<>();
+        String needsLine = fileContent.get(0);
+        ArrayList<String> needsComponents = splitStringCategory(needsLine);
+        cats.add(parseCategory(needsComponents));
+        String regretsLine = fileContent.get(1);
+        ArrayList<String> regretsComponents = splitStringCategory(regretsLine);
+        cats.add(parseCategory(regretsComponents));
+        String wantsLine = fileContent.get(2);
+        ArrayList<String> wantsComponents = splitStringCategory(wantsLine);
+        cats.add(parseCategory(wantsComponents));
+        return cats;
+    }
 
-        for (String line : fileContent) {
-            ArrayList<String> lineComponents = splitString(line);
-            accounts.add(parseAccount(lineComponents));
-        }
-
-        return accounts;
+    // EFFECTS: returns a list of accounts parsed from list of strings
+    // where each string contains data for one account
+    private static List<Category> parseContentGoals(List<String> fileContent) {
+        List<Category> cats = new ArrayList<>();
+        String needsLine = fileContent.get(0);
+        ArrayList<String> needsComponents = splitStringCategory(needsLine);
+        cats.add(parseCategory(needsComponents));
+        String regretsLine = fileContent.get(1);
+        ArrayList<String> regretsComponents = splitStringCategory(regretsLine);
+        cats.add(parseCategory(regretsComponents));
+        String wantsLine = fileContent.get(2);
+        ArrayList<String> wantsComponents = splitStringCategory(wantsLine);
+        cats.add(parseCategory(wantsComponents));
+        return cats;
     }
 
     // EFFECTS: returns a list of strings obtained by splitting line on DELIMITER
@@ -44,16 +84,25 @@ public class Reader {
         return new ArrayList<>(Arrays.asList(splits));
     }
 
+    // EFFECTS: returns a list of strings obtained by splitting line on DELIMITER
+    private static ArrayList<String> splitStringCategory(String line) {
+        String[] splits = line.split(DELIMITER_1);
+        return new ArrayList<>(Arrays.asList(splits));
+    }
+
     // REQUIRES: components has size 4 where element 0 represents the
     // id of the next account to be constructed, element 1 represents
     // the id, elements 2 represents the name and element 3 represents
     // the balance of the account to be constructed
     // EFFECTS: returns an account constructed from components
-    private static Account parseAccount(List<String> components) {
-        int nextId = Integer.parseInt(components.get(0));
-        int id = Integer.parseInt(components.get(1));
-        String name = components.get(2);
-        double balance = Double.parseDouble(components.get(3));
-        return new Account(nextId, id, name, balance);
+    private static Category parseCategory(List<String> components) {
+        Category cat = new Needs;
+        for (String s : components) {
+            ArrayList<String> lineComponents = splitStringCategory(s);
+            String name = lineComponents.get(1);
+            double amount = Double.parseDouble(lineComponents.get(2));
+            Purchase p = new Purchase(name, amount);
+            cat.addToCat(p);
+        }
     }
 }
