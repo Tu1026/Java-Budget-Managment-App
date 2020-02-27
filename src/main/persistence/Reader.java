@@ -27,7 +27,7 @@ public class Reader {
     // third row being wants category
     // fourth row being savings
     // fifth row being goals
-    private static List<String> readFile(File file) throws IOException {
+    public static List<String> readFile(File file) throws IOException {
         return Files.readAllLines(file.toPath());
     }
 
@@ -69,7 +69,7 @@ public class Reader {
     }
 
     // EFFECTS: returns an Category constructed from components
-    private static Category parseCategory(List<String> components) {
+    public static Category parseCategory(List<String> components) {
         Category cat = new Needs();
         for (String s : components) {
             ArrayList<String> lineComponents = splitStringOne(s);
@@ -115,7 +115,7 @@ public class Reader {
 
 
     // EFFECTS: returns a list of goals from given components
-    private static Goals parseGoal(List<String> components) {
+    public static Goals parseGoal(List<String> components) {
         Goals gs = new Goals();
         for (String s : components) {
             ArrayList<String> lineComponents = splitStringOne(s);
@@ -129,13 +129,13 @@ public class Reader {
     }
 
     // EFFECTS: returns a list of strings obtained by splitting line on DELIMITER
-    private static ArrayList<String> splitString(String line) {
+    public static ArrayList<String> splitString(String line) {
         String[] splits = line.split(DELIMITER);
         return new ArrayList<>(Arrays.asList(splits));
     }
 
     // EFFECTS: returns a list of strings obtained by splitting line on DELIMITER_1
-    private static ArrayList<String> splitStringOne(String line) {
+    public static ArrayList<String> splitStringOne(String line) {
         String[] splits = line.split(DELIMITER_1);
         return new ArrayList<>(Arrays.asList(splits));
     }
