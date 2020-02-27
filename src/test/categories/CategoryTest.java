@@ -56,5 +56,13 @@ public abstract class CategoryTest {
         assertEquals("Food" + "\n" + "Pen" + "\n" + "Phone" +"\n", testCat.getListOfPurchases());
     }
 
+    @Test
+    public void testClearList() {
+        testCat.addToCat(food);
+        testCat.addToCat(uselessPen);
+        testCat.clearList();
+        testCat.addToCat(phone);
+        assertEquals(phone, testCat.getFirstInCat());
+    }
 
 }

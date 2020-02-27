@@ -60,4 +60,10 @@ public abstract class Category implements Saveable {
             printWriter.print(Reader.DELIMITER);
         }
     }
+
+    //MODIFIES: This
+    //EFFECTS: Clears everything in the category
+    public void clearList() {
+        cat.clear();
+    }
 }

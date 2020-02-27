@@ -15,46 +15,60 @@ import java.util.Arrays;
 import java.util.List;
 
 // Reference code from the tellerApp
-//A reader reads different data from a file
+//A reader reads all data for categories, savings, and goals from a file
 public class Reader {
     public static final String DELIMITER = ",";
     public static final String DELIMITER_1 = ";";
 
 
     // EFFECTS: returns content of file as a list of strings, each string
-    // containing the content of one row of the file
+    // containing the content of one row of the file with the first row being needs category
+    // second row being regrets category
+    // third row being wants category
+    // fourth row being savings
+    // fifth row being goals
     private static List<String> readFile(File file) throws IOException {
         return Files.readAllLines(file.toPath());
     }
 
-    // EFFECTS: returns a list of accounts parsed from file; throws
+    // EFFECTS: returns a list of categories parsed from file; throws
     // IOException if an exception is raised when opening / reading from file
     public static List<Category> readCategory(File file) throws IOException {
         List<String> fileContent = readFile(file);
         return parseContentCategory(fileContent);
     }
 
-    // EFFECTS: returns a list of accounts parsed from list of strings
-    // where each string contains data for one account
+    // EFFECTS: returns a list of categories parsed from list of strings
+    // where the first item being the need category
+    // second item being the regrets category
+    // third item being the wants category
     private static List<Category> parseContentCategory(List<String> fileContent) {
         List<Category> cats = new ArrayList<>();
-        String needsLine = fileContent.get(0);
-        ArrayList<String> needsComponents = splitString(needsLine);
-        cats.add(parseCategory(needsComponents));
-        String regretsLine = fileContent.get(1);
-        ArrayList<String> regretsComponents = splitString(regretsLine);
-        cats.add(parseCategory(regretsComponents));
-        String wantsLine = fileContent.get(2);
-        ArrayList<String> wantsComponents = splitString(wantsLine);
-        cats.add(parseCategory(wantsComponents));
+        try {
+            String needsLine = fileContent.get(0);
+            ArrayList<String> needsComponents = splitString(needsLine);
+            cats.add(parseCategory(needsComponents));
+        } catch (IndexOutOfBoundsException e) {
+            //Needs is empty in the saved file
+        }
+        try {
+            String regretsLine = fileContent.get(1);
+            ArrayList<String> regretsComponents = splitString(regretsLine);
+            cats.add(parseCategory(regretsComponents));
+        } catch (IndexOutOfBoundsException e) {
+            //Regrets is empty in the saved file
+        }
+        try {
+            String wantsLine = fileContent.get(2);
+            ArrayList<String> wantsComponents = splitString(wantsLine);
+            cats.add(parseCategory(wantsComponents));
+        } catch (IndexOutOfBoundsException e) {
+            //Wants is empty in the saved file
+        }
         return cats;
     }
 
-    // REQUIRES: components has size 4 where element 0 represents the
-    // id of the next account to be constructed, element 1 represents
-    // the id, elements 2 represents the name and element 3 represents
-    // the balance of the account to be constructed
-    // EFFECTS: returns an account constructed from components
+    // EFFECTS: returns an Category constructed from components
     private static Category parseCategory(List<String> components) {
         Category cat = new Needs();
         for (String s : components) {
@@ -67,7 +81,7 @@ public class Reader {
         return cat;
     }
 
-    // EFFECTS: returns a list of accounts parsed from file; throws
+    // EFFECTS: returns a savings parsed from file; throws
     // IOException if an exception is raised when opening / reading from file
     public static Savings readSavings(File file) throws IOException {
         List<String> fileContent = readFile(file);
@@ -77,7 +91,7 @@ public class Reader {
         return savings;
     }
 
-    // EFFECTS: returns a list of accounts parsed from file; throws
+    // EFFECTS: returns a list of goals parsed from file; throws
     // IOException if an exception is raised when opening / reading from file
     public static Goals readGoals(File file) throws IOException {
         List<String> fileContent = readFile(file);
@@ -85,22 +99,22 @@ public class Reader {
     }
 
 
-    // EFFECTS: returns a list of accounts parsed from list of strings
-    // where each string contains data for one account
+    // EFFECTS: returns a list of goals parsed from list of strings
+    // where each string contains data for one goal
     private static Goals parseContentGoals(List<String> fileContent) {
-        Goals goals;
-        String goalsList = fileContent.get(4);
-        ArrayList<String> goalsComponents = splitString(goalsList);
-        goals = parseGoal(goalsComponents);
+        Goals goals = new Goals();
+        try {
+            String goalsList = fileContent.get(4);
+            ArrayList<String> goalsComponents = splitString(goalsList);
+            goals = parseGoal(goalsComponents);
+        } catch (IndexOutOfBoundsException e) {
+            //There is no saved goals in the file
+        }
         return goals;
     }
 
 
-    // REQUIRES: components has size 4 where element 0 represents the
-    // id of the next account to be constructed, element 1 represents
-    // the id, elements 2 represents the name and element 3 represents
-    // the balance of the account to be constructed
-    // EFFECTS: returns an account constructed from components
+    // EFFECTS: returns a list of goals from given components
     private static Goals parseGoal(List<String> components) {
         Goals gs = new Goals();
         for (String s : components) {
@@ -120,7 +134,7 @@ public class Reader {
         return new ArrayList<>(Arrays.asList(splits));
     }
 
-    // EFFECTS: returns a list of strings obtained by splitting line on DELIMITER
+    // EFFECTS: returns a list of strings obtained by splitting line on DELIMITER_1
     private static ArrayList<String> splitStringOne(String line) {
         String[] splits = line.split(DELIMITER_1);
         return new ArrayList<>(Arrays.asList(splits));

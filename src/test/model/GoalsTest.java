@@ -53,4 +53,12 @@ public class GoalsTest {
                 + "\n" + "Textbook, 70.0$, 0 desire points" + "\n", testGoals.getAllGoals());
     }
 
+    @Test
+    public void testClearGoals() {
+        testGoals.addToGoals(phone);
+        testGoals.addToGoals(car);
+        testGoals.clearGoals();
+        testGoals.addToGoals(textbook);
+        assertEquals(textbook, testGoals.getIthGoal(1));
+    }
 }

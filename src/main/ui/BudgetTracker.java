@@ -63,14 +63,26 @@ public class BudgetTracker {
     }
 
     // MODIFIES: this
-    // EFFECTS: loads accounts from ACCOUNTS_FILE, if that file exists;
+    // EFFECTS: loads categories, savings, and goals from BUDGET_FILE, if that file exists;
     // otherwise initializes accounts with default values
     private void loadAccounts() {
         try {
             List<Category> cats = Reader.readCategory(new File(BUDGET_FILE));
-            needs = cats.get(0);
-            regrets = cats.get(1);
-            wants = cats.get(2);
+            try {
+                needs = cats.get(0);
+            } catch (IndexOutOfBoundsException e) {
+                //needs is empty in file
+            }
+            try {
+                regrets = cats.get(1);
+            } catch (IndexOutOfBoundsException e) {
+                //regrets is empty in the file
+            }
+            try {
+                wants = cats.get(2);
+            } catch (IndexOutOfBoundsException e) {
+                // wants is empty in the file
+            }
             savings = Reader.readSavings(new File(BUDGET_FILE));
             goals = Reader.readGoals(new File(BUDGET_FILE));
         } catch (IOException e) {
@@ -119,6 +131,7 @@ public class BudgetTracker {
         System.out.println("\ta -> Check all goals");
         System.out.println("\tm -> Check money in savings");
         System.out.println("\tr -> Save everything about the budget tracker to file");
+        System.out.println("\to -> Empty all goals");
     }
 
     //Reference from the teller app
@@ -138,9 +151,17 @@ public class BudgetTracker {
             doDisplaySavings();
         } else if (command.equals("r")) {
             saveAccounts();
+        } else if (command.equals("o")) {
+            doClearAllGoals();
         } else {
             System.out.println("Invalid input");
         }
+    }
+
+    //MODIFIES: This
+    //EFFECTS: Empty all the goals in the list of goals
+    public void doClearAllGoals() {
+        goals.clearGoals();
     }
 
     //EFFECTS: Prints the current balance in user's saving account
@@ -206,13 +227,38 @@ public class BudgetTracker {
         System.out.println("\nSelect from");
         System.out.println("\ts -> Check total money spent in a category");
         System.out.println("\tp -> List all purchases in a category");
+        System.out.println("\tc -> Clear all purchases in a given category");
         String code = input.next();
         if (code.equals("s")) {
             doCategorySum();
         } else if (code.equals("p")) {
             doCategoryList();
+        } else if (code.equals("c")) {
+            doCategoryClear();
         } else {
             System.out.println("Invalid input!!");
+        }
+    }
+
+    //MODIFIES: This
+    //EFFECTS: Clears everything in a category
+    public void doCategoryClear() {
+        System.out.println("\nSelect from");
+        System.out.println("\tn -> Clear all purchases in need");
+        System.out.println("\tr -> Clear all purchases in regrets");
+        System.out.println("\tw -> Clear all purchases in wants");
+        String code = input.next();
+        if (code.equals("n")) {
+            needs.clearList();
+            System.out.println("All purchases in needs cleared");
+        } else if (code.equals("r")) {
+            regrets.clearList();
+            System.out.println("All purchases in regrets cleared");
+        } else if (code.equals("w")) {
+            wants.clearList();
+            System.out.println("All purchases in wants cleared");
+        } else {
+            System.out.println("Invalid input");
         }
     }
 

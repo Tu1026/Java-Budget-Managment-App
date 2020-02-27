@@ -61,4 +61,10 @@ public class Goals implements Saveable {
             printWriter.print(Reader.DELIMITER);
         }
     }
+
+    //MODIFIES: This
+    //EFFECTS: Empty the list of goals
+    public void clearGoals() {
+        goals.clear();
+    }
 }
