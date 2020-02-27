@@ -94,15 +94,10 @@ public class BudgetTracker {
         try {
             Writer writer = new Writer(new File(BUDGET_FILE));
             writer.write(needs);
-            writer.lineBreak();
             writer.write(regrets);
-            writer.lineBreak();
             writer.write(wants);
-            writer.lineBreak();
             writer.write(savings);
-            writer.lineBreak();
             writer.write(goals);
-            writer.lineBreak();
             writer.close();
             System.out.println("Purchases, Savings and Goals are saved to " + BUDGET_FILE);
         } catch (FileNotFoundException e) {

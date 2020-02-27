@@ -59,8 +59,8 @@ public class Reader {
         Category cat = new Needs();
         for (String s : components) {
             ArrayList<String> lineComponents = splitStringOne(s);
-            String name = lineComponents.get(1);
-            double amount = Double.parseDouble(lineComponents.get(2));
+            String name = lineComponents.get(0);
+            double amount = Double.parseDouble(lineComponents.get(1));
             Purchase p = new Purchase(name, amount);
             cat.addToCat(p);
         }
@@ -105,9 +105,9 @@ public class Reader {
         Goals gs = new Goals();
         for (String s : components) {
             ArrayList<String> lineComponents = splitStringOne(s);
-            String name = lineComponents.get(1);
-            double amount = Double.parseDouble(lineComponents.get(2));
-            int desire = Integer.parseInt(lineComponents.get(3));
+            String name = lineComponents.get(0);
+            double amount = Double.parseDouble(lineComponents.get(1));
+            int desire = Integer.parseInt(lineComponents.get(2));
             Goal g = new Goal(name, amount, desire);
             gs.addToGoals(g);
         }

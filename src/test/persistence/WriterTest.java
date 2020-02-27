@@ -17,8 +17,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 //REFERENCE CODE FROM THE TELLER APP
 class WriterTest {
@@ -28,7 +27,7 @@ class WriterTest {
     private Category regrets;
     private Category wants;
     private Savings savings = new Savings();
-    private Goals goals;
+    private Goals goals = new Goals();
     Purchase food = new Purchase("Food", 10.5);
     Purchase uselessPen = new Purchase("Pen", 1);
     Purchase phone = new Purchase("Phone", 800);
@@ -69,29 +68,44 @@ class WriterTest {
 
         // now read them back in and verify that the accounts have the expected values
         try {
-            List<Category> cats = Reader.readCategory(new File(TEST_FILE));
-            Category needs = cats.get(0);
-            assertEquals(food, needs.getNumInCat(1));
-            assertEquals(uselessPen, needs.getNumInCat(2));
-            assertEquals(phone, needs.getNumInCat(3));
-
-            Category regrets = cats.get(1);
-            assertEquals(food, regrets.getNumInCat(3));
-            assertEquals(uselessPen, regrets.getNumInCat(1));
-            assertEquals(phone, regrets.getNumInCat(2));
-
-            Category wants = cats.get(2);
-            assertEquals(food, regrets.getNumInCat(2));
-            assertEquals(uselessPen, regrets.getNumInCat(3));
-            assertEquals(phone, regrets.getNumInCat(1));
-
-            assertEquals(savings, Reader.readCategory(new File(TEST_FILE)));
+            assertEquals(savings.getSavings(),(Reader.readSavings(new File(TEST_FILE)).getSavings()));
 
             Goals testGoals;
             testGoals = Reader.readGoals(new File(TEST_FILE));
-            assertEquals(phones, testGoals.getIthGoal(1));
-            assertEquals(car, testGoals.getIthGoal(2));
-            assertEquals(textbook, testGoals.getIthGoal(3));
+            assertEquals(phones.getName(), testGoals.getIthGoal(1).getName());
+            assertEquals(phones.getPrice(), testGoals.getIthGoal(1).getPrice());
+            assertEquals(phones.getDesire(), testGoals.getIthGoal(1).getDesire());
+            assertEquals(car.getName(), testGoals.getIthGoal(2).getName());
+            assertEquals(car.getPrice(), testGoals.getIthGoal(2).getPrice());
+            assertEquals(car.getDesire(), testGoals.getIthGoal(2).getDesire());
+            assertEquals(textbook.getName(), testGoals.getIthGoal(3).getName());
+            assertEquals(textbook.getPrice(), testGoals.getIthGoal(3).getPrice());
+            assertEquals(textbook.getDesire(), testGoals.getIthGoal(3).getDesire());
+
+            List<Category> cats = Reader.readCategory(new File(TEST_FILE));
+            Category needs = cats.get(0);
+            assertEquals(food.getItemName(), needs.getNumInCat(1).getItemName());
+            assertEquals(food.getAmount(), needs.getNumInCat(1).getAmount());
+            assertEquals(uselessPen.getItemName(), needs.getNumInCat(2).getItemName());
+            assertEquals(uselessPen.getAmount(), needs.getNumInCat(2).getAmount());
+            assertEquals(phone.getItemName(), needs.getNumInCat(3).getItemName());
+            assertEquals(phone.getAmount(), needs.getNumInCat(3).getAmount());
+
+            Category regrets = cats.get(1);
+            assertEquals(food.getItemName(), regrets.getNumInCat(3).getItemName());
+            assertEquals(food.getAmount(), regrets.getNumInCat(3).getAmount());
+            assertEquals(uselessPen.getItemName(), regrets.getNumInCat(1).getItemName());
+            assertEquals(uselessPen.getAmount(), regrets.getNumInCat(1).getAmount());
+            assertEquals(phone.getItemName(), regrets.getNumInCat(2).getItemName());
+            assertEquals(phone.getAmount(), regrets.getNumInCat(2).getAmount());
+
+            Category wants = cats.get(2);
+            assertEquals(food.getItemName(), wants.getNumInCat(2).getItemName());
+            assertEquals(food.getAmount(), wants.getNumInCat(2).getAmount());
+            assertEquals(uselessPen.getItemName(), wants.getNumInCat(3).getItemName());
+            assertEquals(uselessPen.getAmount(), wants.getNumInCat(3).getAmount());
+            assertEquals(phone.getItemName(), wants.getNumInCat(1).getItemName());
+            assertEquals(phone.getAmount(), wants.getNumInCat(1).getAmount());
 
         } catch (IOException e) {
             fail("IOException should not have been thrown");

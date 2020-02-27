@@ -19,6 +19,7 @@ public class Writer {
     // EFFECTS: writes saveable to file
     public void write(Saveable saveable) {
         saveable.save(printWriter);
+        lineBreak();
     }
 
     //MODIFIES: this
