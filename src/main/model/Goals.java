@@ -39,10 +39,10 @@ public class Goals implements Saveable {
     public String getAllGoals() {
         String goals = "";
         for (Goal g : this.goals) {
-            Double price = g.getPrice();
-            String priceString = price.toString();
-            Integer desire = g.getDesire();
-            String desireString = desire.toString();
+            double price = g.getPrice();
+            String priceString = Double.toString(price);
+            int desire = g.getDesire();
+            String desireString = Integer.toString(desire);
             goals = goals + g.getName() + ", " + priceString + "$, " + desireString + " desire points\n";
         }
         return goals;

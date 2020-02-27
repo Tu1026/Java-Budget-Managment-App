@@ -85,7 +85,7 @@ public class Reader {
     // IOException if an exception is raised when opening / reading from file
     public static Savings readSavings(File file) throws IOException {
         List<String> fileContent = readFile(file);
-        Double savingsDouble = Double.parseDouble(fileContent.get(3));
+        double savingsDouble = Double.parseDouble(fileContent.get(3));
         Savings savings = new Savings();
         savings.savingTransaction(savingsDouble);
         return savings;

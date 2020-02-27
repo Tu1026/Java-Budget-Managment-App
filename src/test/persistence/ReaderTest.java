@@ -2,9 +2,12 @@ package persistence;
 
 
 import org.junit.jupiter.api.Test;
+import org.w3c.dom.ls.LSOutput;
 
 import java.io.File;
 import java.io.IOException;
+
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class ReaderTest {
 
@@ -38,5 +41,27 @@ public class ReaderTest {
     @Test
     void testConstructor() {
         new Reader();
+    }
+
+    @Test
+    void testOutOfBoundsExceptionParseContentCategory() {
+        try {
+            Reader.readCategory(new File("./data/testBudgetTracker1.txt"));
+        } catch (IOException e) {
+            fail("not expecting this exception");
+        } catch (IndexOutOfBoundsException e) {
+            // expected
+        }
+    }
+
+    @Test
+    void testExceptionParseContentGoals() {
+        try {
+            Reader.readGoals(new File("./data/testBudgetTracker1.txt"));
+        } catch (IOException e) {
+            fail("not expecting this exception");
+        } catch (IndexOutOfBoundsException e) {
+            // expected
+        }
     }
 }

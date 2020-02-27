@@ -37,7 +37,7 @@ public class BudgetTracker {
     //EFFECTS: Start the main menu of the application and take user inputs
     public void runBudgetTracker() {
         boolean keepGoing = true;
-        String command = null;
+        String command;
         input = new Scanner(System.in);
         needs = new Needs();
         regrets = new Regrets();
@@ -180,16 +180,21 @@ public class BudgetTracker {
         System.out.println("What category does it belong? (Needs, Regrets, Wants)");
         String category = input.next();
 
-        category.toLowerCase();
+        category = category.toLowerCase();
         Purchase newPurchase = new Purchase(name, amount);
-        if (category.equals("needs")) {
-            needs.addToCat(newPurchase);
-        } else if (category.equals("regrets")) {
-            regrets.addToCat(newPurchase);
-        } else if (category.equals("wants")) {
-            wants.addToCat(newPurchase);
-        } else {
-            System.out.println("Invalid input!");
+        switch (category) {
+            case "needs":
+                needs.addToCat(newPurchase);
+                break;
+            case "regrets":
+                regrets.addToCat(newPurchase);
+                break;
+            case "wants":
+                wants.addToCat(newPurchase);
+                break;
+            default:
+                System.out.println("Invalid input!");
+                break;
         }
     }
 
@@ -197,10 +202,10 @@ public class BudgetTracker {
     //EFFECTS: Add money to the savings and increase the money in the savings according to interest rate
     public void doSavings() {
         System.out.println("How much money are you saving this time?");
-        Double amount = input.nextDouble();
+        double amount = input.nextDouble();
         savings.savingTransaction(amount);
         System.out.println("What is the interest rate? (given in decimal)");
-        Double interest = input.nextDouble();
+        double interest = input.nextDouble();
         savings.savingInterests(interest);
     }
 
@@ -211,7 +216,7 @@ public class BudgetTracker {
         input.nextLine();
         String name = input.nextLine();
         System.out.println("How much does it cost?");
-        Double cost = input.nextDouble();
+        double cost = input.nextDouble();
         System.out.println("On a scale of 1 - 10 how much do you want it?");
         int desire = input.nextInt();
         if ((desire > 10) | (desire < 0)) {
@@ -229,14 +234,19 @@ public class BudgetTracker {
         System.out.println("\tp -> List all purchases in a category");
         System.out.println("\tc -> Clear all purchases in a given category");
         String code = input.next();
-        if (code.equals("s")) {
-            doCategorySum();
-        } else if (code.equals("p")) {
-            doCategoryList();
-        } else if (code.equals("c")) {
-            doCategoryClear();
-        } else {
-            System.out.println("Invalid input!!");
+        switch (code) {
+            case "s":
+                doCategorySum();
+                break;
+            case "p":
+                doCategoryList();
+                break;
+            case "c":
+                doCategoryClear();
+                break;
+            default:
+                System.out.println("Invalid input!!");
+                break;
         }
     }
 
@@ -248,17 +258,22 @@ public class BudgetTracker {
         System.out.println("\tr -> Clear all purchases in regrets");
         System.out.println("\tw -> Clear all purchases in wants");
         String code = input.next();
-        if (code.equals("n")) {
-            needs.clearList();
-            System.out.println("All purchases in needs cleared");
-        } else if (code.equals("r")) {
-            regrets.clearList();
-            System.out.println("All purchases in regrets cleared");
-        } else if (code.equals("w")) {
-            wants.clearList();
-            System.out.println("All purchases in wants cleared");
-        } else {
-            System.out.println("Invalid input");
+        switch (code) {
+            case "n":
+                needs.clearList();
+                System.out.println("All purchases in needs cleared");
+                break;
+            case "r":
+                regrets.clearList();
+                System.out.println("All purchases in regrets cleared");
+                break;
+            case "w":
+                wants.clearList();
+                System.out.println("All purchases in wants cleared");
+                break;
+            default:
+                System.out.println("Invalid input");
+                break;
         }
     }
 
@@ -269,14 +284,19 @@ public class BudgetTracker {
         System.out.println("\tr -> Check total money spent in regrets");
         System.out.println("\tw -> Check total money spent in wants");
         String code = input.next();
-        if (code.equals("n")) {
-            System.out.println(needs.sumOfCat());
-        } else if (code.equals("r")) {
-            System.out.println(regrets.sumOfCat());
-        } else if (code.equals("w")) {
-            System.out.println(wants.sumOfCat());
-        } else {
-            System.out.println("Invalid input");
+        switch (code) {
+            case "n":
+                System.out.println(needs.sumOfCat());
+                break;
+            case "r":
+                System.out.println(regrets.sumOfCat());
+                break;
+            case "w":
+                System.out.println(wants.sumOfCat());
+                break;
+            default:
+                System.out.println("Invalid input");
+                break;
         }
     }
 
@@ -287,21 +307,26 @@ public class BudgetTracker {
         System.out.println("\tr -> Check all purchases in regrets");
         System.out.println("\tw -> Check all purchases in wants");
         String code = input.next();
-        if (code.equals("n")) {
-            System.out.println("All purchases are" + needs.getListOfPurchases());
-        } else if (code.equals("r")) {
-            System.out.println("All purchases are" + regrets.getListOfPurchases());
-        } else if (code.equals("w")) {
-            System.out.println("All purchases are" + wants.getListOfPurchases());
-        } else {
-            System.out.println("Invalid input");
+        switch (code) {
+            case "n":
+                System.out.println("All purchases are" + needs.getListOfPurchases());
+                break;
+            case "r":
+                System.out.println("All purchases are" + regrets.getListOfPurchases());
+                break;
+            case "w":
+                System.out.println("All purchases are" + wants.getListOfPurchases());
+                break;
+            default:
+                System.out.println("Invalid input");
+                break;
         }
     }
 
     //EFFECTS: Return the amount of money the user has in the savings
     public void doDisplaySavings() {
-        Double saving = savings.getSavings();
-        String savingString = saving.toString();
+        double saving = savings.getSavings();
+        String savingString = Double.toString(saving);
 
         System.out.println("You have " + savingString + "$ in your savings");
     }
