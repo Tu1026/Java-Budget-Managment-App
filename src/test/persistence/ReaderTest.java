@@ -1,12 +1,16 @@
 package persistence;
 
 
+import categories.Category;
+import categories.Needs;
+import model.Goals;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class ReaderTest {
@@ -114,6 +118,54 @@ public class ReaderTest {
             fail("not expecting this exception");
         } catch (IndexOutOfBoundsException e) {
             // expected
+        }
+    }
+
+    @Test
+    void testReadNeedsCaughtException() {
+        Category needs= new Needs();
+        try {
+           needs = Reader.readNeeds(new File("./data/testBudgetTracker1.txt"));
+        } catch (IOException e) {
+            fail("should not happen");
+        } catch (IndexOutOfBoundsException e) {
+            fail("Should've been caught before");
+        }
+    }
+
+    @Test
+    void testReadRegretsCaughtException() {
+        Category regrets = new Needs();
+        try {
+            regrets = Reader.readRegrets(new File("./data/testBudgetTracker1.txt"));
+        } catch (IOException e) {
+            fail("should not happen");
+        } catch (IndexOutOfBoundsException e) {
+            fail("Should've been caught before");
+        }
+    }
+
+    @Test
+    void testReadWantsCaughtException() {
+        Category wants = new Needs();
+        try {
+            wants = Reader.readWants(new File("./data/testBudgetTracker1.txt"));
+        } catch (IOException e) {
+            fail("should not happen");
+        } catch (IndexOutOfBoundsException e) {
+            fail("Should've been caught before");
+        }
+    }
+
+    @Test
+    void testReadGoalsCaughtException() {
+        Goals goals = new Goals();
+        try {
+            goals = Reader.readGoals(new File("./data/testBudgetTracker1.txt"));
+        } catch (IOException e) {
+            fail("should not happen");
+        } catch (IndexOutOfBoundsException e) {
+            fail("Should've been caught before");
         }
     }
 }
