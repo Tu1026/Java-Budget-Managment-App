@@ -1,25 +1,38 @@
 package persistence;
 
 
-import categories.Category;
-import model.Goals;
 import org.junit.jupiter.api.Test;
-import org.w3c.dom.ls.LSOutput;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.fail;
-import static persistence.Reader.*;
 
 public class ReaderTest {
 
     @Test
-    void testIOExceptionCat() {
+    void testIOExceptionNeeds() {
         try {
-            Reader.readCategory(new File("./path/does/not/exist/testAccount.txt"));
+            Reader.readNeeds(new File("./path/does/not/exist/testAccount.txt"));
+        } catch (IOException e) {
+            // expected
+        }
+    }
+
+    @Test
+    void testIOExceptionRegrets() {
+        try {
+            Reader.readRegrets(new File("./path/does/not/exist/testAccount.txt"));
+        } catch (IOException e) {
+            // expected
+        }
+    }
+
+    @Test
+    void testIOExceptionWants() {
+        try {
+            Reader.readWants(new File("./path/does/not/exist/testAccount.txt"));
         } catch (IOException e) {
             // expected
         }
@@ -49,15 +62,40 @@ public class ReaderTest {
     }
 
     @Test
-    void testOutOfBoundsExceptionParseContentCategory() {
+    void testOutOfBoundsExceptionParseContentNeeds() {
+        List<String> fileContent;
         try {
-            List<String> fileContent;
             fileContent = Reader.readFile(new File("./data/testBudgetTracker1.txt"));
-            List<Category> cats = new ArrayList<>();
-                String needsLine = fileContent.get(0);
-                ArrayList<String> needsComponents = splitString(needsLine);
-                cats.add(parseCategory(needsComponents));
-                fail("Should be out of bounds");
+            Reader.parseContentNeeds(fileContent);
+            fail("Should be out of bounds");
+        } catch (IOException e) {
+            fail("not expecting this exception");
+        } catch (IndexOutOfBoundsException e) {
+            // expected
+        }
+    }
+
+    @Test
+    void testOutOfBoundsExceptionParseContentRegrets() {
+        List<String> fileContent;
+        try {
+            fileContent = Reader.readFile(new File("./data/testBudgetTracker1.txt"));
+            Reader.parseContentRegrets(fileContent);
+            fail("Should be out of bounds");
+        } catch (IOException e) {
+            fail("not expecting this exception");
+        } catch (IndexOutOfBoundsException e) {
+            // expected
+        }
+    }
+
+    @Test
+    void testOutOfBoundsExceptionParseContentWants() {
+        List<String> fileContent;
+        try {
+            fileContent = Reader.readFile(new File("./data/testBudgetTracker1.txt"));
+            Reader.parseContentWants(fileContent);
+            fail("Should be out of bounds");
         } catch (IOException e) {
             fail("not expecting this exception");
         } catch (IndexOutOfBoundsException e) {
@@ -67,13 +105,10 @@ public class ReaderTest {
 
     @Test
     void testExceptionParseContentGoals() {
+        List<String> fileContent;
         try {
-            List<String> fileContent;
             fileContent = Reader.readFile(new File("./data/testBudgetTracker1.txt"));
-            Goals goals = new Goals();
-                String goalsList = fileContent.get(4);
-                ArrayList<String> goalsComponents = splitString(goalsList);
-                goals = parseGoal(goalsComponents);
+            Reader.parseContentGoals(fileContent);
             fail("Should be out of bounds");
         } catch (IOException e) {
             fail("not expecting this exception");

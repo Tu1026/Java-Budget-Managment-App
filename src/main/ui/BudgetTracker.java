@@ -15,7 +15,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.List;
 import java.util.Scanner;
 
 //Budget tracker application　(Reference from the UI code in the tellerApp)
@@ -67,22 +66,9 @@ public class BudgetTracker {
     // otherwise initializes accounts with default values
     private void loadAccounts() {
         try {
-            List<Category> cats = Reader.readCategory(new File(BUDGET_FILE));
-            try {
-                needs = cats.get(0);
-            } catch (IndexOutOfBoundsException e) {
-                //needs is empty in file
-            }
-            try {
-                regrets = cats.get(1);
-            } catch (IndexOutOfBoundsException e) {
-                //regrets is empty in the file
-            }
-            try {
-                wants = cats.get(2);
-            } catch (IndexOutOfBoundsException e) {
-                // wants is empty in the file
-            }
+            needs = Reader.readNeeds(new File(BUDGET_FILE));
+            regrets = Reader.readRegrets(new File(BUDGET_FILE));
+            wants = Reader.readWants(new File(BUDGET_FILE));
             savings = Reader.readSavings(new File(BUDGET_FILE));
             goals = Reader.readGoals(new File(BUDGET_FILE));
         } catch (IOException e) {

@@ -3,6 +3,8 @@ package persistence;
 import account.Savings;
 import categories.Category;
 import categories.Needs;
+import categories.Regrets;
+import categories.Wants;
 import model.Goal;
 import model.Goals;
 import model.Purchase;
@@ -33,40 +35,80 @@ public class Reader {
 
     // EFFECTS: returns a list of categories parsed from file; throws
     // IOException if an exception is raised when opening / reading from file
-    public static List<Category> readCategory(File file) throws IOException {
-        List<String> fileContent = readFile(file);
-        return parseContentCategory(fileContent);
+    public static Category readNeeds(File file) throws IOException {
+        Category needs;
+        try {
+            List<String> fileContent = readFile(file);
+            needs = parseContentNeeds(fileContent);
+        } catch (IndexOutOfBoundsException e) {
+            needs = new Needs();
+        }
+        return needs;
+    }
+
+    // EFFECTS: returns a list of categories parsed from file; throws
+    // IOException if an exception is raised when opening / reading from file
+    public static Category readRegrets(File file) throws IOException {
+        Category regrets;
+        try {
+            List<String> fileContent = readFile(file);
+            regrets = parseContentRegrets(fileContent);
+        } catch (IndexOutOfBoundsException e) {
+            regrets = new Regrets();
+        }
+        return regrets;
+    }
+
+    // EFFECTS: returns a list of categories parsed from file; throws
+    // IOException if an exception is raised when opening / reading from file
+    public static Category readWants(File file) throws IOException {
+        Category wants;
+        try {
+            List<String> fileContent = readFile(file);
+            wants = parseContentWants(fileContent);
+        } catch (IndexOutOfBoundsException e) {
+            wants = new Wants();
+        }
+        return wants;
     }
 
     // EFFECTS: returns a list of categories parsed from list of strings
     // where the first item being the need category
     // second item being the regrets category
     // third item being the wants category
-    private static List<Category> parseContentCategory(List<String> fileContent) {
-        List<Category> cats = new ArrayList<>();
-        try {
-            String needsLine = fileContent.get(0);
-            ArrayList<String> needsComponents = splitString(needsLine);
-            cats.add(parseCategory(needsComponents));
-        } catch (IndexOutOfBoundsException e) {
-            //Needs is empty in the saved file
-        }
-        try {
-            String regretsLine = fileContent.get(1);
-            ArrayList<String> regretsComponents = splitString(regretsLine);
-            cats.add(parseCategory(regretsComponents));
-        } catch (IndexOutOfBoundsException e) {
-            //Regrets is empty in the saved file
-        }
-        try {
-            String wantsLine = fileContent.get(2);
-            ArrayList<String> wantsComponents = splitString(wantsLine);
-            cats.add(parseCategory(wantsComponents));
-        } catch (IndexOutOfBoundsException e) {
-            //Wants is empty in the saved file
-        }
-        return cats;
+    public static Category parseContentNeeds(List<String> fileContent) throws IndexOutOfBoundsException {
+        Category needs;
+        String needsLine = fileContent.get(0);
+        ArrayList<String> needsComponents = splitString(needsLine);
+        needs = parseCategory(needsComponents);
+        return needs;
     }
+
+    // EFFECTS: returns a list of categories parsed from list of strings
+    // where the first item being the need category
+    // second item being the regrets category
+    // third item being the wants category
+    public static Category parseContentRegrets(List<String> fileContent) throws IndexOutOfBoundsException {
+        Category regrets;
+        String needsLine = fileContent.get(1);
+        ArrayList<String> needsComponents = splitString(needsLine);
+        regrets = parseCategory(needsComponents);
+        return regrets;
+    }
+
+
+    // EFFECTS: returns a list of categories parsed from list of strings
+    // where the first item being the need category
+    // second item being the regrets category
+    // third item being the wants category
+    public static Category parseContentWants(List<String> fileContent) throws IndexOutOfBoundsException {
+        Category wants;
+        String needsLine = fileContent.get(2);
+        ArrayList<String> needsComponents = splitString(needsLine);
+        wants = parseCategory(needsComponents);
+        return wants;
+    }
+
 
     // EFFECTS: returns an Category constructed from components
     public static Category parseCategory(List<String> components) {
@@ -95,27 +137,29 @@ public class Reader {
     // IOException if an exception is raised when opening / reading from file
     public static Goals readGoals(File file) throws IOException {
         List<String> fileContent = readFile(file);
-        return parseContentGoals(fileContent);
-    }
-
-
-    // EFFECTS: returns a list of goals parsed from list of strings
-    // where each string contains data for one goal
-    private static Goals parseContentGoals(List<String> fileContent) {
-        Goals goals = new Goals();
+        Goals goals;
         try {
-            String goalsList = fileContent.get(4);
-            ArrayList<String> goalsComponents = splitString(goalsList);
-            goals = parseGoal(goalsComponents);
+            goals = parseContentGoals(fileContent);
         } catch (IndexOutOfBoundsException e) {
-            //There is no saved goals in the file
+            goals = new Goals();
         }
         return goals;
     }
 
 
+    // EFFECTS: returns a list of goals parsed from list of strings
+    // where each string contains data for one goal
+    public static Goals parseContentGoals(List<String> fileContent) {
+        Goals goals;
+        String goalsList = fileContent.get(4);
+        ArrayList<String> goalsComponents = splitString(goalsList);
+        goals = parseGoal(goalsComponents);
+        return goals;
+    }
+
+
     // EFFECTS: returns a list of goals from given components
-    public static Goals parseGoal(List<String> components) {
+    private static Goals parseGoal(List<String> components) {
         Goals gs = new Goals();
         for (String s : components) {
             ArrayList<String> lineComponents = splitStringOne(s);

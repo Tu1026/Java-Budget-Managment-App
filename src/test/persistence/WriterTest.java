@@ -82,8 +82,7 @@ class WriterTest {
             assertEquals(textbook.getPrice(), testGoals.getIthGoal(3).getPrice());
             assertEquals(textbook.getDesire(), testGoals.getIthGoal(3).getDesire());
 
-            List<Category> cats = Reader.readCategory(new File(TEST_FILE));
-            Category needs = cats.get(0);
+            Category needs = Reader.readNeeds(new File(TEST_FILE));
             assertEquals(food.getItemName(), needs.getNumInCat(1).getItemName());
             assertEquals(food.getAmount(), needs.getNumInCat(1).getAmount());
             assertEquals(uselessPen.getItemName(), needs.getNumInCat(2).getItemName());
@@ -91,7 +90,7 @@ class WriterTest {
             assertEquals(phone.getItemName(), needs.getNumInCat(3).getItemName());
             assertEquals(phone.getAmount(), needs.getNumInCat(3).getAmount());
 
-            Category regrets = cats.get(1);
+            Category regrets = Reader.readRegrets(new File(TEST_FILE));
             assertEquals(food.getItemName(), regrets.getNumInCat(3).getItemName());
             assertEquals(food.getAmount(), regrets.getNumInCat(3).getAmount());
             assertEquals(uselessPen.getItemName(), regrets.getNumInCat(1).getItemName());
@@ -99,7 +98,7 @@ class WriterTest {
             assertEquals(phone.getItemName(), regrets.getNumInCat(2).getItemName());
             assertEquals(phone.getAmount(), regrets.getNumInCat(2).getAmount());
 
-            Category wants = cats.get(2);
+            Category wants = Reader.readWants(new File(TEST_FILE));
             assertEquals(food.getItemName(), wants.getNumInCat(2).getItemName());
             assertEquals(food.getAmount(), wants.getNumInCat(2).getAmount());
             assertEquals(uselessPen.getItemName(), wants.getNumInCat(3).getItemName());
