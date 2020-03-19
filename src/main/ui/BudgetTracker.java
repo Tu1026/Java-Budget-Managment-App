@@ -114,7 +114,7 @@ public class BudgetTracker {
         System.out.println("\ts -> Put money in your savings");
         System.out.println("\tg -> Add a goal");
         System.out.println("\tc -> Check categories");
-        System.out.println("\ta -> Check all goals");
+        System.out.println("\ta -> Manage All goals");
         System.out.println("\tm -> Check money in savings");
         System.out.println("\tr -> Save everything about the budget tracker to file");
         System.out.println("\to -> Empty all goals");
@@ -132,13 +132,11 @@ public class BudgetTracker {
         } else if (command.equals("c")) {
             doCategory();
         } else if (command.equals("a")) {
-            doCheckAllGoals();
+            doManageAllGoals();
         } else if (command.equals("m")) {
             doDisplaySavings();
         } else if (command.equals("r")) {
             saveAccounts();
-        } else if (command.equals("o")) {
-            doClearAllGoals();
         } else {
             System.out.println("Invalid input");
         }
@@ -151,8 +149,27 @@ public class BudgetTracker {
     }
 
     //EFFECTS: Prints the current balance in user's saving account
-    public void doCheckAllGoals() {
-        System.out.println("Your goals are" + "\n" + goals.getAllGoals());
+    public void doManageAllGoals() {
+        System.out.println("\nSelect from");
+        System.out.println("\tg -> Check All Goals");
+        System.out.println("\tn -> Clear nth Goals");
+        System.out.println("\ta -> Clear All Goals");
+        String command = input.next();
+        command = command.toLowerCase();
+        switch (command) {
+            case "g" :
+                System.out.println("Your goals are" + "\n" + goals.getAllGoals());
+                break;
+            case "n":
+                int nth = Integer.parseInt(command);
+                goals.clearNthGoals(nth);
+            case "a":
+                doClearAllGoals();
+                break;
+            default:
+                System.out.println("Invalid input!");
+                break;
+        }
     }
 
     //MODIFIES: This

@@ -61,4 +61,12 @@ public class GoalsTest {
         testGoals.addToGoals(textbook);
         assertEquals(textbook, testGoals.getIthGoal(1));
     }
+
+    @Test
+    public void testClearNthGoals() {
+        testGoals.addToGoals(phone);
+        testGoals.addToGoals(car);
+        testGoals.clearNthGoals(1);
+        assertEquals(car, testGoals.getIthGoal(1));
+    }
 }
