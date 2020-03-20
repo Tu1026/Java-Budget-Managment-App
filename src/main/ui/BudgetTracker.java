@@ -110,35 +110,44 @@ public class BudgetTracker {
     //EFFECTS: Display a list of input options a user can choose from
     public void displayMenu() {
         System.out.println("\nSelect from");
-        System.out.println("\tp -> Add a new purchase");
-        System.out.println("\ts -> Put money in your savings");
-        System.out.println("\tg -> Add a goal");
-        System.out.println("\tc -> Check categories");
-        System.out.println("\ta -> Manage All goals");
-        System.out.println("\tm -> Check money in savings");
+        System.out.println("\ts -> Manage Savings");
+        System.out.println("\tc -> Manage categories");
+        System.out.println("\tg -> Manage All goals");
         System.out.println("\tr -> Save everything about the budget tracker to file");
-        System.out.println("\to -> Empty all goals");
     }
 
     //Reference from the teller app
     //EFFECTS: Takes the user to different functionality according to input command
     public void processCommand(String command) {
-        if (command.equals("p")) {
-            doPurchase();
-        } else if (command.equals("s")) {
-            doSavings();
-        } else if (command.equals("g")) {
-            doAddGoals();
+        if (command.equals("s")) {
+            doManageSavings();
         } else if (command.equals("c")) {
             doCategory();
-        } else if (command.equals("a")) {
+        } else if (command.equals("g")) {
             doManageAllGoals();
-        } else if (command.equals("m")) {
-            doDisplaySavings();
         } else if (command.equals("r")) {
             saveAccounts();
         } else {
             System.out.println("Invalid input");
+        }
+    }
+
+    public void doManageSavings() {
+        System.out.println("\nSelect from");
+        System.out.println("\ta -> Money transaction to savings (can be negative amount)");
+        System.out.println("\tc -> Check money in savings");
+        String command = input.next();
+        command = command.toLowerCase();
+        switch (command) {
+            case "a":
+                doSavings();
+                break;
+            case "c":
+                doDisplaySavings();
+                break;
+            default:
+                System.out.println("Invalid input!");
+                break;
         }
     }
 
@@ -150,10 +159,10 @@ public class BudgetTracker {
 
     //EFFECTS: Prints the current balance in user's saving account
     public void doManageAllGoals() {
-        System.out.println("\nSelect from");
         System.out.println("\tg -> Check All Goals");
         System.out.println("\tn -> Clear nth Goals");
         System.out.println("\ta -> Clear All Goals");
+        System.out.println("\tm -> add a goal");
         String command = input.next();
         command = command.toLowerCase();
         switch (command) {
@@ -162,9 +171,17 @@ public class BudgetTracker {
                 break;
             case "n":
                 int nth = Integer.parseInt(command);
-                goals.clearNthGoals(nth);
+                try {
+                    goals.clearNthGoals(nth);
+                } catch (NullPointerException e) {
+                    System.out.println("This goal does not exist");
+                }
+                break;
             case "a":
                 doClearAllGoals();
+                break;
+            case "m":
+                doAddGoals();
                 break;
             default:
                 System.out.println("Invalid input!");
@@ -233,19 +250,17 @@ public class BudgetTracker {
     //EFFECTS: Take user to different functionality of about category according to their input
     public void doCategory() {
         System.out.println("\nSelect from");
-        System.out.println("\ts -> Check total money spent in a category");
-        System.out.println("\tp -> List all purchases in a category");
-        System.out.println("\tc -> Clear all purchases in a given category");
+        System.out.println("\ts -> Select a category to manage");
+        System.out.println("\ta -> Add a purchase");
         String code = input.next();
         switch (code) {
             case "s":
-                doCategorySum();
+                System.out.println("Needs, Regrets, or Wants");
+                String userInput = input.next();
+                doCategoryFunctionality(userInput);
                 break;
-            case "p":
-                doCategoryList();
-                break;
-            case "c":
-                doCategoryClear();
+            case "a":
+                doPurchase();
                 break;
             default:
                 System.out.println("Invalid input!!");
@@ -253,72 +268,41 @@ public class BudgetTracker {
         }
     }
 
-    //MODIFIES: This
-    //EFFECTS: Clears everything in a category
-    public void doCategoryClear() {
+    public void doCategoryFunctionality(String cat) {
         System.out.println("\nSelect from");
-        System.out.println("\tn -> Clear all purchases in need");
-        System.out.println("\tr -> Clear all purchases in regrets");
-        System.out.println("\tw -> Clear all purchases in wants");
-        String code = input.next();
-        switch (code) {
-            case "n":
-                needs.clearList();
-                System.out.println("All purchases in needs cleared");
-                break;
-            case "r":
-                regrets.clearList();
-                System.out.println("All purchases in regrets cleared");
-                break;
-            case "w":
-                wants.clearList();
-                System.out.println("All purchases in wants cleared");
-                break;
-            default:
-                System.out.println("Invalid input");
-                break;
+        System.out.println("\tl -> List all purchases");
+        System.out.println("\tc -> Clear all purchases");
+        System.out.println("\tm -> Check total money spent");
+        System.out.println("\tn -> Remove nth Purchase");
+        Category placeHolder = null;
+        if (cat.equals("needs")) {
+            placeHolder = needs;
+        } else if (cat.equals("regrets")) {
+            placeHolder = regrets;
+        } else if (cat.equals("wants")) {
+            placeHolder = wants;
         }
-    }
-
-    //EFFECTS: Return the total money spent in respective category given user input
-    public void doCategorySum() {
-        System.out.println("\nSelect from");
-        System.out.println("\tn -> Check total money spent in need");
-        System.out.println("\tr -> Check total money spent in regrets");
-        System.out.println("\tw -> Check total money spent in wants");
-        String code = input.next();
-        switch (code) {
+        String command = input.next();
+        switch (command) {
+            case "l":
+                System.out.println("All purchases are " + placeHolder.getListOfPurchases());
+                break;
+            case "c":
+                placeHolder.clearList();
+                System.out.println("All purchases in " + cat + " are cleared");
+                break;
+            case "m":
+                System.out.println("Total money spent in " + cat + " $" + needs.sumOfCat());
+                break;
             case "n":
-                System.out.println(needs.sumOfCat());
-                break;
-            case "r":
-                System.out.println(regrets.sumOfCat());
-                break;
-            case "w":
-                System.out.println(wants.sumOfCat());
-                break;
-            default:
-                System.out.println("Invalid input");
-                break;
-        }
-    }
-
-    //EFFECTS: Return all the purchases made in a given category given a user input
-    public void doCategoryList() {
-        System.out.println("\nSelect from");
-        System.out.println("\tn -> Check all purchases in need");
-        System.out.println("\tr -> Check all purchases in regrets");
-        System.out.println("\tw -> Check all purchases in wants");
-        String code = input.next();
-        switch (code) {
-            case "n":
-                System.out.println("All purchases are" + needs.getListOfPurchases());
-                break;
-            case "r":
-                System.out.println("All purchases are" + regrets.getListOfPurchases());
-                break;
-            case "w":
-                System.out.println("All purchases are" + wants.getListOfPurchases());
+                String numberString = input.next();
+                int number = Integer.parseInt(numberString);
+                System.out.println("\t Which purchase from eg. 1, 2, 3 ....");
+                try {
+                    placeHolder.removeNthList(number);
+                } catch (NullPointerException e) {
+                    System.out.println("No purchase at such position");
+                }
                 break;
             default:
                 System.out.println("Invalid input");

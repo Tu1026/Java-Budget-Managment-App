@@ -44,7 +44,7 @@ public abstract class Category implements Saveable {
     public String getListOfPurchases() {
         String allName = "";
         for (Purchase p : cat) {
-            allName = allName + p.getItemName() + "\n";
+            allName = allName + p.getItemName() + ", $" + p.getAmount() + "\n";
         }
         return allName;
     }
@@ -65,5 +65,11 @@ public abstract class Category implements Saveable {
     //EFFECTS: Clears everything in the category
     public void clearList() {
         cat.clear();
+    }
+
+    //MODIFIES: This
+    //EFFECTS: Clears nth purchase in the category
+    public void removeNthList(int i) {
+        cat.remove(i - 1);
     }
 }

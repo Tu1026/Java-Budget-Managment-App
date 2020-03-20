@@ -53,7 +53,8 @@ public abstract class CategoryTest {
         testCat.addToCat(food);
         testCat.addToCat(uselessPen);
         testCat.addToCat(phone);
-        assertEquals("Food" + "\n" + "Pen" + "\n" + "Phone" +"\n", testCat.getListOfPurchases());
+        assertEquals("Food, $10.5" + "\n" + "Pen, $1.0" + "\n" + "Phone, $800.0" +
+                "\n", testCat.getListOfPurchases());
     }
 
     @Test
@@ -63,6 +64,14 @@ public abstract class CategoryTest {
         testCat.clearList();
         testCat.addToCat(phone);
         assertEquals(phone, testCat.getFirstInCat());
+    }
+
+    @Test
+    public void testRemoveNthList() {
+        testCat.addToCat(food);
+        testCat.addToCat(uselessPen);
+        testCat.removeNthList(2);
+        assertEquals(food, testCat.getFirstInCat());
     }
 
 }

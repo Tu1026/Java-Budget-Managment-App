@@ -71,10 +71,6 @@ public class Goals implements Saveable {
     //MODIFIES: This
     //EFFECTS: Removes the nth goal
     public void clearNthGoals(int n) {
-        try {
-            goals.remove(n - 1);
-        } catch (NullPointerException e) {
-            System.out.println("This goal does not exist");
-        }
+        goals.remove(n - 1);
     }
 }
