@@ -1,4 +1,4 @@
-package ui.GUI;
+package ui.gui;
 
 import account.Savings;
 import categories.Category;
@@ -8,16 +8,16 @@ import categories.Wants;
 import model.Goals;
 import persistence.Reader;
 import persistence.Writer;
+import ui.gui.exception.CategoryInvalidException;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.Scanner;
+import java.io.*;
+
 
 public class MainFrame extends JFrame implements ActionListener {
     private static final String BUDGET_FILE = "./data/budget.txt";
@@ -26,11 +26,19 @@ public class MainFrame extends JFrame implements ActionListener {
     private Category wants;
     private Savings savings;
     private Goals goals;
-    private Scanner input;
     private static MainFrame instance;
 
     public MainFrame() {
         super("BudgetTracker");
+        instance = this;
+        MenuPanel uiButtons = new MenuPanel();
+        Dimension ss = Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension frameSize = new Dimension(800, 800);
+        this.setBounds(ss.width / 2 - frameSize.width / 2,
+                ss.height / 2 - frameSize.height / 2,
+                frameSize.width, frameSize.height);
+        this.add(uiButtons);
+        this.setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         loadAccounts();
         initMenu();
@@ -53,13 +61,19 @@ public class MainFrame extends JFrame implements ActionListener {
 
     private void initMenu() {
         JMenuBar menubar = new JMenuBar();
-        JMenu menu = new JMenu("Save to File");
+        JMenu menu1 = new JMenu("Save to File");
+        JMenu menu2 = new JMenu("Load a file");
+        JMenuItem load = new JMenuItem("Load a file");
         JMenuItem menuItem1 = new JMenuItem("Save to file");
-        menubar.add(menu);
-        menu.add(menuItem1);
+        menubar.add(menu1);
+        menubar.add(menu2);
+        menu1.add(menuItem1);
+        menu2.add(load);
         setJMenuBar(menubar);
         menuItem1.setActionCommand("save");
         menuItem1.addActionListener(this);
+        load.setActionCommand("load");
+        load.addActionListener(this);
 
     }
 
@@ -81,12 +95,34 @@ public class MainFrame extends JFrame implements ActionListener {
             case "save":
                 saveAccounts();
                 break;
+            case "load":
+                loadAFile();
+        }
+    }
+
+    private void loadAFile() {
+        JFileChooser loadFile = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("TEXT FILES", "txt", "text");
+        loadFile.setFileFilter(filter);
+        int returnValue = loadFile.showOpenDialog(this);
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = loadFile.getSelectedFile();
+            try {
+                needs = Reader.readNeeds(selectedFile);
+                regrets = Reader.readRegrets(selectedFile);
+                wants = Reader.readWants(selectedFile);
+                savings = Reader.readSavings(selectedFile);
+                goals = Reader.readGoals(selectedFile);
+            } catch (IOException e) {
+                String message = "Not a valid formatted file";
+                JOptionPane.showMessageDialog(new JFrame(), message, "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 
     //Reference code from teller app
     // EFFECTS: saves state of Categories, Savings, and Goals to BUDGET_FILE
-    private void saveAccounts() {
+    public void saveAccounts() {
         try {
             Writer writer = new Writer(new File(BUDGET_FILE));
             writer.write(needs);
@@ -106,15 +142,6 @@ public class MainFrame extends JFrame implements ActionListener {
 
     public static void main(String[] args) {
         MainFrame frame = new MainFrame();
-        instance = frame;
-        MenuPanel uiButtons = new MenuPanel();
-        Dimension ss = Toolkit.getDefaultToolkit().getScreenSize();
-        Dimension frameSize = new Dimension(800, 800);
-        frame.setBounds(ss.width / 2 - frameSize.width / 2,
-                ss.height / 2 - frameSize.height / 2,
-                frameSize.width, frameSize.height);
-        frame.add(uiButtons);
-        frame.setVisible(true);
     }
 
     public void changePanel(JPanel panel) {
@@ -176,5 +203,42 @@ public class MainFrame extends JFrame implements ActionListener {
 
     public Goals getGoals() {
         return goals;
+    }
+
+    public Category getCategory(String s) throws CategoryInvalidException {
+        switch (s) {
+            case "needs":
+                return needs;
+            case "wants":
+                return wants;
+            case "regrets":
+                return regrets;
+            default:
+                throw new CategoryInvalidException();
+        }
+    }
+
+    public void categoryState() {
+        getContentPane().removeAll();
+        setLayout(new BorderLayout());
+        String needsList = needs.getListOfPurchases();
+        String regretsList = regrets.getListOfPurchases();
+        String wantsList = wants.getListOfPurchases();
+        final JTextArea CategoryText = new JTextArea();
+        CategoryText.setEditable(false);
+        CategoryText.append("All your purchases are: \n\n Needs:\n " + needsList + "\n Regrets:\n " + regretsList
+                + "\n Wants:\n " + wantsList);
+        Font font = new Font("Times New Roman", Font.BOLD, 15);
+        CategoryText.setFont(font);
+        CategoryText.setLineWrap(true);
+        CategoryText.setWrapStyleWord(true);
+
+
+        CategoryPanel categoryPanel = new CategoryPanel();
+        Container c = getContentPane();
+        c.add(categoryPanel, BorderLayout.WEST);
+        c.add(CategoryText, BorderLayout.CENTER);
+        setVisible(true);
+        update(getGraphics());
     }
 }

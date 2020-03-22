@@ -1,5 +1,6 @@
 package model;
 
+import exception.NameNotValidException;
 import persistence.Reader;
 import persistence.Saveable;
 
@@ -72,5 +73,17 @@ public class Goals implements Saveable {
     //EFFECTS: Removes the nth goal
     public void clearNthGoals(int n) {
         goals.remove(n - 1);
+    }
+
+    //MODIFIES: tHIS
+    //EFFECTS: Remove the given Goal from list of Goals
+    public void removeGivenGoal(String s) throws NameNotValidException {
+        for (Goal g : goals) {
+            if (g.getName().toLowerCase().equals(s)) {
+                goals.remove(g);
+                return;
+            }
+        }
+        throw new NameNotValidException();
     }
 }

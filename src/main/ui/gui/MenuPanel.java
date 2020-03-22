@@ -1,4 +1,4 @@
-package ui.GUI;
+package ui.gui;
 
 
 import javax.swing.*;
@@ -23,7 +23,7 @@ public class MenuPanel extends JPanel {
         b1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                MainFrame.getInstance().savingsState();
+                MainFrame.getInstance().categoryState();
             }
         });
 

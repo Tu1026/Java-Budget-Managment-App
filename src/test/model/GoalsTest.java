@@ -1,9 +1,11 @@
 package model;
 
+import exception.NameNotValidException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class GoalsTest {
     public Goals testGoals;
@@ -68,5 +70,29 @@ public class GoalsTest {
         testGoals.addToGoals(car);
         testGoals.clearNthGoals(1);
         assertEquals(car, testGoals.getIthGoal(1));
+    }
+
+    @Test
+    public void testRemoveGiven() {
+        testGoals.addToGoals(phone);
+        testGoals.addToGoals(car);
+        try {
+            testGoals.removeGivenGoal("phone");
+            assertEquals(car, testGoals.getIthGoal(1));
+        } catch (NameNotValidException e) {
+            fail("Should not fail here");
+        }
+    }
+
+    @Test
+    public void testRemoveGivenThrowException() {
+        testGoals.addToGoals(phone);
+        testGoals.addToGoals(car);
+        try {
+            testGoals.removeGivenGoal("fone");
+            fail("Should throw exception");
+        } catch (NameNotValidException e) {
+            //should pass
+        }
     }
 }

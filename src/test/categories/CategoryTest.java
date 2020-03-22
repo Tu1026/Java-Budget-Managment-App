@@ -1,10 +1,12 @@
 package categories;
 
+import exception.NameNotValidException;
 import model.Purchase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public abstract class CategoryTest {
     public Category testCat;
@@ -72,6 +74,31 @@ public abstract class CategoryTest {
         testCat.addToCat(uselessPen);
         testCat.removeNthList(2);
         assertEquals(food, testCat.getFirstInCat());
+    }
+
+    @Test
+    public void testRemovedNamedItemThrowException() {
+        testCat.addToCat(food);
+        testCat.addToCat(uselessPen);
+        try {
+            testCat.removeNamedPurchase("not exist");
+            fail("This name should not pass the test");
+        } catch (NameNotValidException e) {
+            //should pass
+            assertEquals(food, testCat.getFirstInCat());
+        }
+    }
+
+    @Test
+    public void testRemovedNamedItemNormal() {
+        testCat.addToCat(food);
+        testCat.addToCat(uselessPen);
+        try {
+            testCat.removeNamedPurchase("food");
+            assertEquals(uselessPen, testCat.getFirstInCat());
+        } catch (NameNotValidException e1) {
+            fail("The test should fail");
+        }
     }
 
 }

@@ -126,10 +126,14 @@ public class Reader {
     // EFFECTS: returns a savings parsed from file; throws
     // IOException if an exception is raised when opening / reading from file
     public static Savings readSavings(File file) throws IOException {
-        List<String> fileContent = readFile(file);
-        double savingsDouble = Double.parseDouble(fileContent.get(3));
         Savings savings = new Savings();
-        savings.savingTransaction(savingsDouble);
+        try {
+            List<String> fileContent = readFile(file);
+            double savingsDouble = Double.parseDouble(fileContent.get(3));
+            savings.savingTransaction(savingsDouble);
+        } catch (Exception e) {
+            //ignore this
+        }
         return savings;
     }
 

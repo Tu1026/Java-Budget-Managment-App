@@ -1,5 +1,6 @@
 package categories;
 
+import exception.NameNotValidException;
 import model.Purchase;
 import persistence.Reader;
 import persistence.Saveable;
@@ -71,5 +72,17 @@ public abstract class Category implements Saveable {
     //EFFECTS: Clears nth purchase in the category
     public void removeNthList(int i) {
         cat.remove(i - 1);
+    }
+
+    //MODIFIES: This
+    //EFFECTS: Remove the purchase in category with the given name
+    public void removeNamedPurchase(String s) throws NameNotValidException {
+        for (Purchase p : cat) {
+            if (p.getItemName().toLowerCase().equals(s.toLowerCase())) {
+                cat.remove(p);
+                return;
+            }
+        }
+        throw new NameNotValidException();
     }
 }
