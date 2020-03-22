@@ -123,6 +123,7 @@ public class GoalsPanel extends JPanel {
         add(desireOfGoal, gc);
     }
 
+
     public void makeNewGoals(String n, Double c, Integer d) {
         Goal newGoal = new Goal(n, c, d);
         MainFrame.getInstance().getGoals().addToGoals(newGoal);

@@ -20,7 +20,7 @@ import java.io.*;
 
 
 public class MainFrame extends JFrame implements ActionListener {
-    private static final String BUDGET_FILE = "./data/budget.txt";
+    private String budgetFile = "./data/budget.txt";
     private Category needs;
     private Category regrets;
     private Category wants;
@@ -30,30 +30,49 @@ public class MainFrame extends JFrame implements ActionListener {
 
     public MainFrame() {
         super("BudgetTracker");
+        getContentPane().removeAll();
         instance = this;
+        this.setLayout(new BorderLayout());
         MenuPanel uiButtons = new MenuPanel();
         Dimension ss = Toolkit.getDefaultToolkit().getScreenSize();
         Dimension frameSize = new Dimension(800, 800);
         this.setBounds(ss.width / 2 - frameSize.width / 2,
                 ss.height / 2 - frameSize.height / 2,
                 frameSize.width, frameSize.height);
-        this.add(uiButtons);
+        add(uiButtons, BorderLayout.CENTER);
+        menuText();
         this.setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         loadAccounts();
         initMenu();
     }
 
+    public void menuText() {
+        JTextArea menuText = new JTextArea();
+        menuText.setEditable(false);
+        menuText.setWrapStyleWord(true);
+        menuText.setLineWrap(true);
+        String text = "This is an app that allows you to manage your savings, purchases and financial goals. \n"
+                + "The app instantly loads the default file, however, there is also an option to load a new txt file \n"
+                + "that is properly formatted and you can try loading the testBudgetTracker.txt in data folder to test."
+                + "\n Most importantly the application does not auto save so SAVE before existing.";
+        Font font = new Font("Times New Roman", Font.PLAIN, 20);
+        menuText.setFont(font);
+        menuText.append(text);
+        add(menuText, BorderLayout.WEST);
+    }
+
+
     // MODIFIES: this
     // EFFECTS: loads categories, savings, and goals from BUDGET_FILE, if that file exists;
     // otherwise initializes accounts with default values
     private void loadAccounts() {
         try {
-            needs = Reader.readNeeds(new File(BUDGET_FILE));
-            regrets = Reader.readRegrets(new File(BUDGET_FILE));
-            wants = Reader.readWants(new File(BUDGET_FILE));
-            savings = Reader.readSavings(new File(BUDGET_FILE));
-            goals = Reader.readGoals(new File(BUDGET_FILE));
+            needs = Reader.readNeeds(new File(budgetFile));
+            regrets = Reader.readRegrets(new File(budgetFile));
+            wants = Reader.readWants(new File(budgetFile));
+            savings = Reader.readSavings(new File(budgetFile));
+            goals = Reader.readGoals(new File(budgetFile));
         } catch (IOException e) {
             init();
         }
@@ -64,17 +83,20 @@ public class MainFrame extends JFrame implements ActionListener {
         JMenu menu1 = new JMenu("Save to File");
         JMenu menu2 = new JMenu("Load a file");
         JMenuItem load = new JMenuItem("Load a file");
-        JMenuItem menuItem1 = new JMenuItem("Save to file");
+        JMenuItem save = new JMenuItem("Save to file");
+        JMenuItem saveAs = new JMenuItem("Save as a new file");
         menubar.add(menu1);
         menubar.add(menu2);
-        menu1.add(menuItem1);
+        menu1.add(save);
+        menu1.add(saveAs);
         menu2.add(load);
         setJMenuBar(menubar);
-        menuItem1.setActionCommand("save");
-        menuItem1.addActionListener(this);
+        save.setActionCommand("save");
+        save.addActionListener(this);
         load.setActionCommand("load");
         load.addActionListener(this);
-
+        saveAs.setActionCommand("saveas");
+        saveAs.addActionListener(this);
     }
 
 
@@ -97,6 +119,33 @@ public class MainFrame extends JFrame implements ActionListener {
                 break;
             case "load":
                 loadAFile();
+            case "saveas":
+                saveAFile();
+        }
+    }
+
+    private void saveAFile() {
+        JFileChooser saveFile = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+        saveFile.setDialogTitle("Save this file as a txt file");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("TEXT FILES", "txt", "text");
+        saveFile.setFileFilter(filter);
+        int returnValue = saveFile.showSaveDialog(this);
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            File file = new File(saveFile.getSelectedFile() + ".txt");
+            try {
+                Writer writer = new Writer(file);
+                writer.write(needs);
+                writer.write(regrets);
+                writer.write(wants);
+                writer.write(savings);
+                writer.write(goals);
+                writer.close();
+            } catch (FileNotFoundException e) {
+                String message = "Unable to save to " + file.getAbsolutePath();
+                JOptionPane.showMessageDialog(new JFrame(), message, "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -113,6 +162,7 @@ public class MainFrame extends JFrame implements ActionListener {
                 wants = Reader.readWants(selectedFile);
                 savings = Reader.readSavings(selectedFile);
                 goals = Reader.readGoals(selectedFile);
+                budgetFile = selectedFile.getAbsolutePath();
             } catch (IOException e) {
                 String message = "Not a valid formatted file";
                 JOptionPane.showMessageDialog(new JFrame(), message, "Error", JOptionPane.ERROR_MESSAGE);
@@ -124,16 +174,16 @@ public class MainFrame extends JFrame implements ActionListener {
     // EFFECTS: saves state of Categories, Savings, and Goals to BUDGET_FILE
     public void saveAccounts() {
         try {
-            Writer writer = new Writer(new File(BUDGET_FILE));
+            Writer writer = new Writer(new File(budgetFile));
             writer.write(needs);
             writer.write(regrets);
             writer.write(wants);
             writer.write(savings);
             writer.write(goals);
             writer.close();
-            System.out.println("Purchases, Savings and Goals are saved to " + BUDGET_FILE);
+            System.out.println("Purchases, Savings and Goals are saved to " + budgetFile);
         } catch (FileNotFoundException e) {
-            System.out.println("Unable to save to " + BUDGET_FILE);
+            System.out.println("Unable to save to " + budgetFile);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             // this is due to a programming error

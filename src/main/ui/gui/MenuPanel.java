@@ -3,51 +3,51 @@ package ui.gui;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class MenuPanel extends JPanel {
-    private JButton b1;
-    private JButton b2;
-    private JButton b3;
-    private GridBagConstraints gbc = new GridBagConstraints();
 
     public MenuPanel() {
         setLayout(new GridBagLayout());
+        categoryButton();
+        savingsButton();
+        goalsButton();
+    }
 
-        b1 = new JButton("Manage Categories");
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        add(b1,gbc);
+    public void categoryButton() {
+        GridBagConstraints gc = new GridBagConstraints();
+        JButton b1 = new JButton("Manage Categories");
+        gc.fill = GridBagConstraints.BOTH;
+        gc.gridx = 0;
+        gc.gridy = 0;
+        gc.gridwidth = 2;
+        gc.weighty = 2;
+        gc.weightx = 0;
+        add(b1,gc);
         b1.setActionCommand("categories");
-        b1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                MainFrame.getInstance().categoryState();
-            }
-        });
+        b1.addActionListener(e -> MainFrame.getInstance().categoryState());
+    }
 
-        b2 = new JButton("Manage savings");
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        add(b2, gbc);
-        b2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                MainFrame.getInstance().savingsState();
-            }
-        });
+    public void savingsButton() {
+        GridBagConstraints gc = new GridBagConstraints();
+        JButton b2 = new JButton("Manage savings");
+        gc.fill = GridBagConstraints.BOTH;
+        gc.gridx = 0;
+        gc.gridy = 1;
+        gc.weighty = 2;
+        gc.weightx = 0;
+        add(b2, gc);
+        b2.addActionListener(e -> MainFrame.getInstance().savingsState());
+    }
 
-        b3 = new JButton("Manage all goals");
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        add(b3,gbc);
-        b3.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                MainFrame.getInstance().goalsState();
-            }
-        });
-
+    public void goalsButton() {
+        GridBagConstraints gc = new GridBagConstraints();
+        JButton b3 = new JButton("Manage all goals");
+        gc.fill = GridBagConstraints.BOTH;
+        gc.gridx = 1;
+        gc.gridy = 1;
+        gc.weighty = 2;
+        gc.weightx = 0;
+        add(b3,gc);
+        b3.addActionListener(e -> MainFrame.getInstance().goalsState());
     }
 }
