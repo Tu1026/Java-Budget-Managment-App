@@ -165,6 +165,11 @@ public class BudgetTracker {
         System.out.println("\tm -> add a goal");
         String command = input.next();
         command = command.toLowerCase();
+        goalsCases(command);
+    }
+
+    //EFFECTS: check and do different things according to the input
+    public void goalsCases(String command) {
         switch (command) {
             case "g" :
                 System.out.println("Your goals are" + "\n" + goals.getAllGoals());
@@ -275,14 +280,23 @@ public class BudgetTracker {
         System.out.println("\tm -> Check total money spent");
         System.out.println("\tn -> Remove nth Purchase");
         Category placeHolder = null;
-        if (cat.equals("needs")) {
-            placeHolder = needs;
-        } else if (cat.equals("regrets")) {
-            placeHolder = regrets;
-        } else if (cat.equals("wants")) {
-            placeHolder = wants;
+        switch (cat) {
+            case "needs":
+                placeHolder = needs;
+                break;
+            case "regrets":
+                placeHolder = regrets;
+                break;
+            case "wants":
+                placeHolder = wants;
+                break;
         }
         String command = input.next();
+        categoryCases(command, placeHolder, cat);
+    }
+
+    //EFFECTS: Do different operation to the given category according to the input command
+    public void categoryCases(String command, Category placeHolder, String cat) {
         switch (command) {
             case "l":
                 System.out.println("All purchases are " + placeHolder.getListOfPurchases());
@@ -303,9 +317,6 @@ public class BudgetTracker {
                 } catch (NullPointerException e) {
                     System.out.println("No purchase at such position");
                 }
-                break;
-            default:
-                System.out.println("Invalid input");
                 break;
         }
     }
