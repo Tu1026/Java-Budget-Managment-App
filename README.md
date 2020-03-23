@@ -32,6 +32,9 @@ manually enter their spending.
 - As a user, I want to be able to load all the previous purchases and goal when I start up the application
 
 ### Instructions for grader
+***Run the "MainFrame" class under the folder gui to start
+***There are also tool tips for every button and error messages for almost all the incorrect inputs that I could think 
+of. 
 - You can generate the first required event by going into manage purchases fill in all three required fields
 the first one can be any string, second can be any number, third has to be one of the required categories. 
 After you have done so hit the "add to the category" button you add such purchase to given category You can
@@ -44,16 +47,17 @@ purchase" button. This will delete the said item with said them in the given cat
 that you want to clear 
 and hit the "delete all in given category" button this way everything in the category will be deleted. There are similar
 functionality in both the manage savings and manage goals tabs.
-- You can trigger my audio component by clicking on any one of the three buttons in the main menu.
+- You can trigger my audio component by clicking on any one of the three buttons in the main menu or 
+anytime you click a on the grey space. I have lost of pop up error messages when you input the wrong type of data for
+different field for example if you tye "four" instead of "4" for cost. The visual component can be found 
+in the menu. When you hit the button "pop up a random cute photo" a random cute photo will pop up and 
+it will be a different photo each time.
 - You can save the state of my application by using the "save to file" menu at the upper left corner. There are 
 two options under that menu. If you click "save to file" the application will just automatically save progress 
 to the current file that you just loaded. If you click "save as a new file" you can create a new txt file that is 
 formatted correctly for this app to the location of your desire.
 - You can reload the state of my application by using the "load a file" menu at beside the "save to file" menu.
-Everytime you open the app the app will automatically load from the default file which is \data\budget.txt in the 
+Every time you open the app the app will automatically load from the default file which is \data\budget.txt in the 
 project starter. However, if you use this function you can load a file anywhere as long as it's properly formatted 
 to this app. If you try to load a file that is not formatted for this app a message will pop up and let you know it's
 not the right file.
-
-***There are also tool tips for every button and error messages for almost all the incorrect inputs that I could think 
-of. 

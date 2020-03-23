@@ -3,19 +3,20 @@ package ui.gui;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
+//REPRESENTS: The menu for managing savings
 public class SavingsPanel extends JPanel {
     private JTextField moneyField;
     private JTextField interestField;
     private GridBagConstraints gc = new GridBagConstraints();
 
+    //MODIFIES:
+    //EFFECT: construct the menu for savings
     public SavingsPanel() {
         Dimension size = getPreferredSize();
         size.width = 400;
         setPreferredSize(size);
         setBorder(BorderFactory.createTitledBorder("Manage Savings"));
-
         setLayout(new GridBagLayout());
         makeLabels();
         makeTextFields();
@@ -23,6 +24,9 @@ public class SavingsPanel extends JPanel {
         makeBackToMenuButton();
     }
 
+    //MODIFIES: this
+    //MODIFIES: this
+    //EFFECTS: Make a button that takes user back to the main menu
     private void makeBackToMenuButton() {
         JButton backToMenyButton = new JButton("Go back to main menu");
         GridBagConstraints c = new GridBagConstraints();
@@ -37,6 +41,8 @@ public class SavingsPanel extends JPanel {
         backToMenyButton.addActionListener(e -> MainFrame.getInstance().changePanel(new MenuPanel()));
     }
 
+    //MODIFIES: this
+    //EFFECTS: Make the labels for the text fields
     public void makeLabels() {
         JLabel amountSaved = new JLabel("Money input: ");
         JLabel interestRate = new JLabel("Interest rate in decimal: ");
@@ -52,6 +58,8 @@ public class SavingsPanel extends JPanel {
         add(interestRate, gc);
     }
 
+    //MODIFIES: this
+    //EFFECTS: make the text fields fo user input
     public void makeTextFields() {
         moneyField = new JTextField(10);
         interestField = new JTextField(10);
@@ -65,6 +73,8 @@ public class SavingsPanel extends JPanel {
         add(interestField, gc);
     }
 
+    //MODIFIES: this
+    //EFFECTS: make the add button that once hit will take user input and make a new transaction to savings
     public void makeAddButton() {
         JButton addButton = new JButton("Add to Savings");
         addButton.setToolTipText("Either input the amount put in (positive) or take out (negative) or a given"
@@ -81,6 +91,8 @@ public class SavingsPanel extends JPanel {
         addButton.addActionListener(this::addToSavingsAction);
     }
 
+    //MODIFIES: this
+    //EFFECTS: perform the action of adding money or interest rate to bank account
     public void addToSavingsAction(ActionEvent a) {
         if (!moneyField.getText().equals("")) {
             try {
@@ -106,7 +118,8 @@ public class SavingsPanel extends JPanel {
         }
     }
 
-
+    //MODIFIES: this
+    //EFFECTS: Perform the transaction for saving account
     public void doSavingTransaction(double m) {
         if (!MainFrame.getInstance().getSavings().savingTransaction(m)) {
             String message = "Cannot have negative balance";
@@ -114,6 +127,8 @@ public class SavingsPanel extends JPanel {
         }
     }
 
+    //MODIFIES: this
+    //EFFECTS: Increase the money in saving according to given interest rate
     public void doInterestRate(double i) {
         MainFrame.getInstance().getSavings().savingInterests(i);
     }

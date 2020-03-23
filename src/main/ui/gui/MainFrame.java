@@ -10,15 +10,17 @@ import persistence.Reader;
 import persistence.Writer;
 import ui.gui.exception.CategoryInvalidException;
 
+import javax.sound.sampled.*;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.io.*;
 
-
+//The main frame that will contain different menus in different state
 public class MainFrame extends JFrame implements ActionListener {
     private String budgetFile = "./data/budget.txt";
     private Category needs;
@@ -28,6 +30,9 @@ public class MainFrame extends JFrame implements ActionListener {
     private Goals goals;
     private static MainFrame instance;
 
+    //MODIFIES: this
+    //EFFECTS: Construct a frame with given title and centred in the middle of screen with main menu and load
+    //         data from the default file
     public MainFrame() {
         super("BudgetTracker");
         getContentPane().removeAll();
@@ -40,27 +45,52 @@ public class MainFrame extends JFrame implements ActionListener {
                 ss.height / 2 - frameSize.height / 2,
                 frameSize.width, frameSize.height);
         add(uiButtons, BorderLayout.CENTER);
-        menuText();
         this.setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         loadAccounts();
         initMenu();
+        instance.addMouseListener(new MouseListener());
     }
 
-    public void menuText() {
-        JTextArea menuText = new JTextArea();
-        menuText.setEditable(false);
-        menuText.setWrapStyleWord(true);
-        menuText.setLineWrap(true);
-        String text = "This is an app that allows you to manage your savings, purchases and financial goals. \n"
-                + "The app instantly loads the default file, however, there is also an option to load a new txt file \n"
-                + "that is properly formatted and you can try loading the testBudgetTracker.txt in data folder to test."
-                + "\n Most importantly the application does not auto save so SAVE before existing.";
-        Font font = new Font("Times New Roman", Font.PLAIN, 20);
-        menuText.setFont(font);
-        menuText.append(text);
-        add(menuText, BorderLayout.WEST);
+    //EFFECTS: When mouse is pressed down make a click noise otherwise don't do anything
+    private static class MouseListener implements java.awt.event.MouseListener {
+        public void mouseClicked(MouseEvent e) {
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            try {
+                AudioInputStream sound = AudioSystem.getAudioInputStream(new File(
+                        "C:\\Users\\admin\\Desktop\\project_f1c3b\\data\\click noise.wav"));
+                Clip clip = AudioSystem.getClip();
+                clip.open(sound);
+                FloatControl gainControl =
+                        (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+                gainControl.setValue(-10.0f);
+                clip.start();
+            } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e2) {
+                String message = "Could not find this audio file";
+                JOptionPane.showMessageDialog(new JFrame(), message, "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+
+        }
     }
+
+
 
 
     // MODIFIES: this
@@ -78,6 +108,8 @@ public class MainFrame extends JFrame implements ActionListener {
         }
     }
 
+    //MODIFIES: this
+    //EFFECTS: Add you menu bars each with their own functions to the main frame
     private void initMenu() {
         JMenuBar menubar = new JMenuBar();
         JMenu menu1 = new JMenu("Save to File");
@@ -110,7 +142,10 @@ public class MainFrame extends JFrame implements ActionListener {
         goals = new Goals();
     }
 
-    //This is the method that is called when the the JButton btn is clicked
+    //MODIFIES: this
+    //EFFECTS: if the menu bar called has the command "save" save data to default file
+    //         if the menu bar called has the command "load" load a file that is formatted to this app
+    //         if the menu bar called has the command "saveas" save this file as a new txt file
     public void actionPerformed(ActionEvent e) {
         String actionEvent = e.getActionCommand();
         switch (actionEvent) {
@@ -124,6 +159,9 @@ public class MainFrame extends JFrame implements ActionListener {
         }
     }
 
+
+    //MODIFIES: this
+    //EFFECTS; Save current file as a new txt file and temporary change default file to this new file
     private void saveAFile() {
         JFileChooser saveFile = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
         saveFile.setDialogTitle("Save this file as a txt file");
@@ -149,6 +187,8 @@ public class MainFrame extends JFrame implements ActionListener {
         }
     }
 
+    //MODIFIES: this
+    //EFFECTS: Load a new file and temporary set the default file to the given file
     private void loadAFile() {
         JFileChooser loadFile = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
         FileNameExtensionFilter filter = new FileNameExtensionFilter("TEXT FILES", "txt", "text");
@@ -171,6 +211,7 @@ public class MainFrame extends JFrame implements ActionListener {
     }
 
     //Reference code from teller app
+    // Modifies: this
     // EFFECTS: saves state of Categories, Savings, and Goals to BUDGET_FILE
     public void saveAccounts() {
         try {
@@ -190,10 +231,13 @@ public class MainFrame extends JFrame implements ActionListener {
         }
     }
 
+    //EFFECTS: initiates the gui for the budgetTracker app
     public static void main(String[] args) {
         MainFrame frame = new MainFrame();
     }
 
+    // MODIFIES: this
+    // EFFECTS: reset the frame to contain only the given panel
     public void changePanel(JPanel panel) {
         getContentPane().removeAll();
         instance.add(panel);
@@ -202,10 +246,13 @@ public class MainFrame extends JFrame implements ActionListener {
         update(getGraphics());
     }
 
+    //EFFECTS: return this given instance of MainFrame
     public static MainFrame getInstance() {
         return instance;
     }
 
+    //MODIFIES: this
+    //EFFECTS: chang the state of the Frame to contain savings menu
     public void savingsState() {
         getContentPane().removeAll();
         setLayout(new BorderLayout());
@@ -225,10 +272,13 @@ public class MainFrame extends JFrame implements ActionListener {
         update(getGraphics());
     }
 
+    //EFFECTS: return savings in the file
     public Savings getSavings() {
         return savings;
     }
 
+    //MODIFIES: this
+    //EFFECTS: Remove the current menu and change to goals menu
     public void goalsState() {
         getContentPane().removeAll();
         setLayout(new BorderLayout());
@@ -241,8 +291,6 @@ public class MainFrame extends JFrame implements ActionListener {
         goalText.setFont(font);
         goalText.setLineWrap(true);
         goalText.setWrapStyleWord(true);
-
-
         GoalsPanel goalsPanel = new GoalsPanel();
         Container c = getContentPane();
         c.add(goalsPanel, BorderLayout.WEST);
@@ -251,10 +299,12 @@ public class MainFrame extends JFrame implements ActionListener {
         update(getGraphics());
     }
 
+    //EFFECTS: return the goals in this file
     public Goals getGoals() {
         return goals;
     }
 
+    //EFFECTS: Return a given category in this file
     public Category getCategory(String s) throws CategoryInvalidException {
         switch (s) {
             case "needs":
@@ -268,6 +318,8 @@ public class MainFrame extends JFrame implements ActionListener {
         }
     }
 
+    //Modifies: this
+    //EFFECTS: remove the current menu from the frame and change it to category menu
     public void categoryState() {
         getContentPane().removeAll();
         setLayout(new BorderLayout());

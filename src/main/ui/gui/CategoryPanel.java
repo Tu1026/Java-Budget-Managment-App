@@ -8,6 +8,8 @@ import exception.NameNotValidException;
 import javax.swing.*;
 import java.awt.*;
 
+//the menu for managing purchases in category
+
 public class CategoryPanel extends JPanel {
 
     private GridBagConstraints gc = new GridBagConstraints();
@@ -15,6 +17,7 @@ public class CategoryPanel extends JPanel {
     private JTextField costField = new JTextField(10);
     private JTextField categoryField = new JTextField(10);
 
+    //EFFECTS: Construct the menu for managing category
     public CategoryPanel() {
         Dimension size = getPreferredSize();
         size.width = 400;
@@ -23,13 +26,14 @@ public class CategoryPanel extends JPanel {
         setLayout(new GridBagLayout());
         makeLabels();
         makeFields();
-        makeAddToGoalsButton();
-        makeTextArea();
+        makeAddToCategoryButton();
         makeBackToMenuButton();
         makeNewDeleteButton();
         makeNewDeleteAllButton();
     }
 
+    //MODIFIES: this
+    //EFFECTS: make a button that takes user back to the main menu
     private void makeBackToMenuButton() {
         JButton b2 = new JButton("Go back to main menu");
         b2.setToolTipText("Hit this button to go back to main menu");
@@ -41,25 +45,10 @@ public class CategoryPanel extends JPanel {
         b2.addActionListener(e -> MainFrame.getInstance().changePanel(new MenuPanel()));
     }
 
-    private void makeTextArea() {
-//        final JTextArea notice = new JTextArea();
-//        notice.append("You need to fill in all three text columns before using"
-//                + "the add button" + "\n" + "Desire point has to be a whole number between 1-10 \n"
-//                + "To delete just input the name of goal you want to delete and hit the delete button \n"
-//                + "***Most Importantly don't forget to SAVE your progress with the upper left menu");
-//        Font font = new Font("Times new Roman", Font.BOLD, 20);
-//        notice.setFont(font);
-//        notice.setLineWrap(true);
-//        notice.setWrapStyleWord(true);
-//        gc.fill = GridBagConstraints.BOTH;
-//        gc.weighty = 2;
-//        gc.gridx = 1;
-//        gc.gridy = 4;
-//        add(notice, gc);
-
-    }
-
-    private void makeAddToGoalsButton() {
+    //MODIFIES: this, MainFrame
+    //EFFECTS: make a button that when hit, takes user inputs and add a given purchases, given cost, to the given
+    //         category
+    private void makeAddToCategoryButton() {
         JButton b1 = new JButton("Add to the category");
         gc.fill = GridBagConstraints.BOTH;
         gc.weighty = 2;
@@ -84,6 +73,8 @@ public class CategoryPanel extends JPanel {
         });
     }
 
+    //MODIFIES: this
+    //EFFECTS: make text fields that take user input
     private void makeFields() {
         gc.fill = GridBagConstraints.HORIZONTAL;
         gc.gridx = 1;
@@ -99,6 +90,8 @@ public class CategoryPanel extends JPanel {
         add(categoryField, gc);
     }
 
+    //MODIFIES: this
+    //EFFECTS: make labels for the respective text fields
     public void makeLabels() {
         JLabel nameOfItem = new JLabel("Name of Purchase: ");
         JLabel costOfGoal = new JLabel("Cost of Purchase: ");
@@ -119,6 +112,8 @@ public class CategoryPanel extends JPanel {
         add(desireOfGoal, gc);
     }
 
+    //MODIFIES: this, MainFrame
+    //EFFECTS: add a given purchases to a category
     public void addToCat(String n, Double c, String cat) {
         Purchase p = new Purchase(n, c);
         try {
@@ -130,16 +125,20 @@ public class CategoryPanel extends JPanel {
         }
     }
 
+    //EFFECTS: pop up a message that remind the user only enter one of the three categories
     public void errorCategoryMessage() {
         String message = "Only enter needs, regrets, or wants for the Category field!!!";
         JOptionPane.showMessageDialog(new JFrame(), message, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
+    //EFFECTS: pop up a message that remind user cost has to be a numeric number
     public void errorCostMessage() {
         String message = "Only positive numeric number for cost!!!";
         JOptionPane.showMessageDialog(new JFrame(), message, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
+    //MODIFIES: this, MainFrame
+    //EFFECTS: make a button that deletes a purchase in a category that matches the user inputs
     public void makeNewDeleteButton() {
         JButton deleteButton = new JButton("Delete a Purchase");
         deleteButton.setToolTipText("Hit this button after putting the name and category of a purchase in the text"
@@ -166,11 +165,14 @@ public class CategoryPanel extends JPanel {
 
     }
 
+    //EFFECTS: Pop up a message telling the user there is no such purchase with the given name in the given category
     public void nameNotValidError() {
         String message = "Cannot find purchase with this name in this category";
         JOptionPane.showMessageDialog(new JFrame(), message, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
+    //MODIFIES: this, MainFrame
+    //EFFECTS: delete all purchases in the given category
     public void makeNewDeleteAllButton() {
         JButton deleteAllButton = new JButton("Delete all purchase in given category");
         deleteAllButton.setToolTipText("Put the name of the category in the category text field to delete"
