@@ -25,7 +25,6 @@ public class SavingsPanel extends JPanel {
     }
 
     //MODIFIES: this
-    //MODIFIES: this
     //EFFECTS: Make a button that takes user back to the main menu
     private void makeBackToMenuButton() {
         JButton backToMenyButton = new JButton("Go back to main menu");

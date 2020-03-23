@@ -61,7 +61,7 @@ public class MainFrame extends JFrame implements ActionListener {
         public void mousePressed(MouseEvent e) {
             try {
                 AudioInputStream sound = AudioSystem.getAudioInputStream(new File(
-                        "C:\\Users\\admin\\Desktop\\project_f1c3b\\data\\click noise.wav"));
+                        "data/click noise.wav"));
                 Clip clip = AudioSystem.getClip();
                 clip.open(sound);
                 FloatControl gainControl =

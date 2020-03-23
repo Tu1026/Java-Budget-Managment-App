@@ -91,7 +91,7 @@ public class MenuPanel extends JPanel {
     public void doMoneyMusic() {
         try {
             AudioInputStream sound = AudioSystem.getAudioInputStream(new File(
-                    "C:\\Users\\admin\\Desktop\\project_f1c3b\\data\\Money sound.wav"));
+                    "data/Money sound.wav"));
             Clip clip = AudioSystem.getClip();
             clip.open(sound);
             FloatControl gainControl =
@@ -111,7 +111,7 @@ public class MenuPanel extends JPanel {
     public void doCoinNoise() {
         try {
             AudioInputStream sound = AudioSystem.getAudioInputStream(new File(
-                    "C:\\Users\\admin\\Desktop\\project_f1c3b\\data\\coin.wav"));
+                    "data/coin.wav"));
             Clip clip = AudioSystem.getClip();
             clip.open(sound);
             FloatControl gainControl =
@@ -131,7 +131,7 @@ public class MenuPanel extends JPanel {
     public void doCheerNoise() {
         try {
             AudioInputStream sound = AudioSystem.getAudioInputStream(new File(
-                    "C:\\Users\\admin\\Desktop\\project_f1c3b\\data\\cheers.wav"));
+                    "data/cheers.wav"));
             Clip clip = AudioSystem.getClip();
             clip.open(sound);
             FloatControl gainControl =
@@ -149,7 +149,7 @@ public class MenuPanel extends JPanel {
     //EFFECTS: pop up a random dog photo from the directory
     public static void popUpImage() {
         JDialog dialog = new JDialog();
-        File dir = new File("C:\\Users\\admin\\Desktop\\project_f1c3b\\data\\photos");
+        File dir = new File("data/photos");
         File[] photos = dir.listFiles();
         Random rando = new Random();
         assert photos != null;
