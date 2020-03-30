@@ -5,6 +5,7 @@ import categories.Category;
 import categories.Needs;
 import categories.Regrets;
 import categories.Wants;
+import exception.NotInTheListException;
 import model.Goal;
 import model.Goals;
 import model.Purchase;
@@ -314,7 +315,7 @@ public class BudgetTracker {
                 System.out.println("\t Which purchase from eg. 1, 2, 3 ....");
                 try {
                     placeHolder.removeNthList(number);
-                } catch (NullPointerException e) {
+                } catch (NotInTheListException e) {
                     System.out.println("No purchase at such position");
                 }
                 break;

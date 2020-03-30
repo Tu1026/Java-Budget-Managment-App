@@ -1,6 +1,8 @@
 package categories;
 
 import exception.NameNotValidException;
+import exception.NotInTheListException;
+import exception.NothingInFirstOfCatException;
 import model.Purchase;
 import persistence.Reader;
 import persistence.Saveable;
@@ -28,19 +30,20 @@ public abstract class Category implements Saveable {
         cat.add(p);
     }
 
-    //REQUIRES: The category is not empty
+
     //EFFECTS: return the first purchase of the category
-    public Purchase getFirstInCat() {
+    public Purchase getFirstInCat() throws NothingInFirstOfCatException {
+        if (cat.size() == 0) {
+            throw new NothingInFirstOfCatException();
+        }
         return cat.getFirst();
     }
 
-    //REQUITES: Non empty category and i > 0
     //EFFECTS: Returns the ith purchase of the category using 1 indexing
-    public Purchase getNumInCat(int i) {
+    public Purchase getNumInCat(int i) throws IndexOutOfBoundsException {
         return cat.get(i - 1);
     }
 
-    //REQUIRES: Non empty category
     //EFFECTS: Return the names of all purchases in a category
     public String getListOfPurchases() {
         String allName = "";
@@ -70,7 +73,10 @@ public abstract class Category implements Saveable {
 
     //MODIFIES: This
     //EFFECTS: Clears nth purchase in the category
-    public void removeNthList(int i) {
+    public void removeNthList(int i) throws NotInTheListException {
+        if (cat.size() < i) {
+            throw new NotInTheListException();
+        }
         cat.remove(i - 1);
     }
 

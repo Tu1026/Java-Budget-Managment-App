@@ -1,6 +1,8 @@
 package categories;
 
 import exception.NameNotValidException;
+import exception.NotInTheListException;
+import exception.NothingInFirstOfCatException;
 import model.Purchase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,6 +16,7 @@ public abstract class CategoryTest {
     Purchase uselessPen;
     Purchase phone;
 
+
     @BeforeEach
     public void samplePurchases() {
         food = new Purchase("Food", 10.5);
@@ -25,10 +28,32 @@ public abstract class CategoryTest {
     @Test
     public void testAddToCatAndGetFirstInCat() {
         testCat.addToCat(food);
-        assertEquals(food, testCat.getFirstInCat());
+        Purchase assertObject1 = null;
+        Purchase assertObject2 = null;
+        try {
+            assertObject1 = testCat.getFirstInCat();
+        } catch (NothingInFirstOfCatException e) {
+            fail("Should have something here");
+        }
+        try {
+            assertObject2 = testCat.getFirstInCat();
+        } catch (NothingInFirstOfCatException e) {
+            fail("Should have something here");
+        }
+        assertEquals(food, assertObject1);
         testCat.addToCat(uselessPen);
-        assertEquals(food, testCat.getFirstInCat());
+        assertEquals(food, assertObject2);
         assertEquals(uselessPen, testCat.getNumInCat(2));
+    }
+
+    @Test
+    public void testGetFirstInCatThrowException() {
+        try {
+            testCat.getFirstInCat();
+            fail("Should throw exception");
+        } catch (NothingInFirstOfCatException e) {
+            //should catch here
+        }
     }
 
     @Test
@@ -60,21 +85,56 @@ public abstract class CategoryTest {
     }
 
     @Test
+    public void testEmptyListOfPurchase() {
+        assertEquals("", testCat.getListOfPurchases());
+    }
+
+    @Test
     public void testClearList() {
         testCat.addToCat(food);
         testCat.addToCat(uselessPen);
         testCat.clearList();
         testCat.addToCat(phone);
-        assertEquals(phone, testCat.getFirstInCat());
+        Purchase assertObject1 = null;
+        try {
+            assertObject1 = testCat.getFirstInCat();
+        } catch (NothingInFirstOfCatException e) {
+            fail("Should have something here");
+        }
+        assertEquals(phone, assertObject1);
     }
 
     @Test
-    public void testRemoveNthList() {
+    public void testRemoveNthListNoException() {
         testCat.addToCat(food);
         testCat.addToCat(uselessPen);
-        testCat.removeNthList(2);
-        assertEquals(food, testCat.getFirstInCat());
+        try {
+            testCat.removeNthList(2);
+            Purchase assertObject1 = null;
+            try {
+                assertObject1 = testCat.getFirstInCat();
+            } catch (NothingInFirstOfCatException e) {
+                fail("Should have something here");
+            }
+            assertEquals(food, assertObject1);
+        } catch (NotInTheListException e) {
+            fail("This should not be thrown");
+        }
     }
+
+    @Test
+    public void testRemoveNthListThrowException() {
+        testCat.addToCat(food);
+        testCat.addToCat(uselessPen);
+        try {
+            testCat.removeNthList(3);
+            fail("Exception should have been thrown here");
+        } catch (NotInTheListException e) {
+            //Should throw exception
+        }
+    }
+
+
 
     @Test
     public void testRemovedNamedItemThrowException() {
@@ -85,7 +145,6 @@ public abstract class CategoryTest {
             fail("This name should not pass the test");
         } catch (NameNotValidException e) {
             //should pass
-            assertEquals(food, testCat.getFirstInCat());
         }
     }
 
@@ -95,9 +154,26 @@ public abstract class CategoryTest {
         testCat.addToCat(uselessPen);
         try {
             testCat.removeNamedPurchase("food");
-            assertEquals(uselessPen, testCat.getFirstInCat());
+            Purchase assertObject1 = null;
+            try {
+                assertObject1 = testCat.getFirstInCat();
+            } catch (NothingInFirstOfCatException e) {
+                fail("Should have something here");
+            }
+            assertEquals(uselessPen, assertObject1);
         } catch (NameNotValidException e1) {
-            fail("The test should fail");
+            fail("The name should be valid");
+        }
+    }
+
+    @Test
+    public void testGetNumInCatThrowException() {
+        testCat.addToCat(food);
+        try {
+            testCat.getNumInCat(100);
+            fail("Should catch the exception");
+        } catch (IndexOutOfBoundsException e) {
+            //Should pass
         }
     }
 

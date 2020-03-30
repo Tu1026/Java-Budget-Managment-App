@@ -61,3 +61,10 @@ Every time you open the app the app will automatically load from the default fil
 project starter. However, if you use this function you can load a file anywhere as long as it's properly formatted 
 to this app. If you try to load a file that is not formatted for this app a message will pop up and let you know it's
 not the right file.
+### Phase4:Task2
+Since all four of the design can only minimally fit my app I just decided to incorporate 2 of them.
+The entire Category class and all the subclasses under it are now robust with no requires clause in 
+any of the methods. The tests to test out the respective exception thrown are also put in test.
+Also the three subclasses under the category class now have their own distinct operation for the addToCat method
+(although very minimally because these classes in theory are not that different but it is easier to read the code 
+and for design to separate them).
