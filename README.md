@@ -62,9 +62,26 @@ project starter. However, if you use this function you can load a file anywhere 
 to this app. If you try to load a file that is not formatted for this app a message will pop up and let you know it's
 not the right file.
 ### Phase4:Task2
-Since all four of the design can only minimally fit my app I just decided to incorporate 2 of them.
-The entire Category class and all the subclasses under it are now robust with no requires clause in 
+Since all four of the designs can only minimally fit my app I just decided to incorporate 2 of them.
+- The entire Category class and all the subclasses under it are now robust with no requires clause in 
 any of the methods. The tests to test out the respective exception thrown are also put in test.
-Also the three subclasses under the category class now have their own distinct operation for the addToCat method
-(although very minimally because these classes in theory are not that different but it is easier to read the code 
-and for design to separate them).
+- Also the three subclasses under the category class now have their own overridden methods from Category class
+(although very minimally different because these classes in theory are not that different but it is easier to read the 
+code and design if they are separated).
+### Phase 4: Task 3
+- One of the places in my project that has poor cohesion is in the MainFrame class of my GUI. This class should only
+be accounting for constructing a Frame that has a proper size, and when trigger it loads on a new given panel without
+knowing the anything or operation about those panels. However, I was designing I accidentally designed the menu bars
+inside of the MainFrame class. The MainFrame class should not be responsible for menu, so I refactored the menu 
+and functionality that come with it out into their own class called MainMenu.
+- There is also too much coupling(Instead of downward coupling there is too much upward coupling) between all the GUIs
+in terms of the fields that they operate on. For example right now if I initiate the app will load the default file and
+the values contain in it will be the fields in MainFrame. The implication of this is that, whenever there is an 
+operation within the panels that wants to change the value in the file they have to access back up to the MainFrame.
+This also means that instead of letting the MainFrame be at
+the top of the class chain and the panels below it have no knowledge of anything inside it, the panels now have to 
+refer back up to the MainFrame class to access the values every time.
+
+To deal with this coupling issue, I created a new class called GuiData
+that is dedicated to store data about the file current being
+edited, so everything about data operation will refer back to here instead of the Frame.

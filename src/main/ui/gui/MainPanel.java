@@ -8,10 +8,10 @@ import java.awt.*;
 import java.util.Random;
 //The main menu of the application
 
-public class MenuPanel extends JPanel {
+public class MainPanel extends JPanel {
 
     //EFFECTS: constructs the main menu for the app
-    public MenuPanel() {
+    public MainPanel() {
         setLayout(new GridBagLayout());
         categoryButton();
         savingsButton();

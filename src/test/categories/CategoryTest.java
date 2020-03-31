@@ -3,7 +3,6 @@ package categories;
 import exception.NameNotValidException;
 import exception.NotInTheListException;
 import exception.NothingInFirstOfCatException;
-import model.Purchase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

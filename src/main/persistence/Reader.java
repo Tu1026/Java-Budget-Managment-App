@@ -7,7 +7,7 @@ import categories.Regrets;
 import categories.Wants;
 import model.Goal;
 import model.Goals;
-import model.Purchase;
+import categories.Purchase;
 
 import java.io.File;
 import java.io.IOException;

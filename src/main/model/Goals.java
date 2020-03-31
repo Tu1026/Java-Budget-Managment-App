@@ -37,7 +37,7 @@ public class Goals implements Saveable {
 
     //REQUIRES: Non empty list of goals
     //EFFECTS: Return all the names, costs, and desires for all goals in the list of goals as a string
-    public String getAllGoals() {
+    public String getListOfGoals() {
         String goals = "";
         for (Goal g : this.goals) {
             double price = g.getPrice();

@@ -37,7 +37,7 @@ public class SavingsPanel extends JPanel {
         c.gridx = 0;
         c.gridy = 3;
         add(backToMenyButton, c);
-        backToMenyButton.addActionListener(e -> MainFrame.getInstance().changePanel(new MenuPanel()));
+        backToMenyButton.addActionListener(e -> MainFrame.getInstance().changePanel(new MainPanel()));
     }
 
     //MODIFIES: this

@@ -7,7 +7,7 @@ import categories.Regrets;
 import categories.Wants;
 import model.Goal;
 import model.Goals;
-import model.Purchase;
+import categories.Purchase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +15,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 

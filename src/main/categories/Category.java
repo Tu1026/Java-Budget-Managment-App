@@ -3,7 +3,6 @@ package categories;
 import exception.NameNotValidException;
 import exception.NotInTheListException;
 import exception.NothingInFirstOfCatException;
-import model.Purchase;
 import persistence.Reader;
 import persistence.Saveable;
 

@@ -1,5 +1,6 @@
-package model;
+package categories;
 
+import categories.Purchase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

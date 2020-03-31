@@ -8,7 +8,7 @@ import categories.Wants;
 import exception.NotInTheListException;
 import model.Goal;
 import model.Goals;
-import model.Purchase;
+import categories.Purchase;
 import persistence.Reader;
 import persistence.Writer;
 
@@ -173,7 +173,7 @@ public class BudgetTracker {
     public void goalsCases(String command) {
         switch (command) {
             case "g" :
-                System.out.println("Your goals are" + "\n" + goals.getAllGoals());
+                System.out.println("Your goals are" + "\n" + goals.getListOfGoals());
                 break;
             case "n":
                 int nth = Integer.parseInt(command);

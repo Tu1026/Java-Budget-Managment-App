@@ -52,7 +52,7 @@ public class GoalsTest {
         testGoals.addToGoals(car);
         testGoals.addToGoals(textbook);
         assertEquals("Phone, $800.0, 10 desire points" + "\n" + "Car, $20000.0, 7 desire points"
-                + "\n" + "Textbook, $70.0, 0 desire points" + "\n", testGoals.getAllGoals());
+                + "\n" + "Textbook, $70.0, 0 desire points" + "\n", testGoals.getListOfGoals());
     }
 
     @Test

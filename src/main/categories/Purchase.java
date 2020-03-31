@@ -1,4 +1,4 @@
-package model;
+package categories;
 
 // A purchase has a name of the item purchased and money in dollars spent on it.
 public class Purchase {

@@ -40,7 +40,7 @@ public class GoalsPanel extends JPanel {
         gc.gridx = 1;
         gc.gridy = 5;
         add(b2, gc);
-        b2.addActionListener(e -> MainFrame.getInstance().changePanel(new MenuPanel()));
+        b2.addActionListener(e -> MainFrame.getInstance().changePanel(new MainPanel()));
     }
 
     //MODIFIES: this

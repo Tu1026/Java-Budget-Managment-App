@@ -1,7 +1,7 @@
 package ui.gui;
 
 import categories.Category;
-import model.Purchase;
+import categories.Purchase;
 import ui.gui.exception.CategoryInvalidException;
 import exception.NameNotValidException;
 
@@ -42,7 +42,7 @@ public class CategoryPanel extends JPanel {
         gc.gridx = 1;
         gc.gridy = 5;
         add(b2, gc);
-        b2.addActionListener(e -> MainFrame.getInstance().changePanel(new MenuPanel()));
+        b2.addActionListener(e -> MainFrame.getInstance().changePanel(new MainPanel()));
     }
 
     //MODIFIES: this, MainFrame
