@@ -1,13 +1,8 @@
-package ui.gui.exception;
+package ui.gui;
 
-import account.Savings;
-import categories.Category;
-import categories.Needs;
-import categories.Regrets;
-import categories.Wants;
-import model.Goals;
 import persistence.Reader;
 import persistence.Writer;
+import ui.gui.exception.CategoryInvalidException;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -19,23 +14,16 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-public class MainMenu extends JMenuBar implements ActionListener {
-    private String budgetFile = "./data/budget.txt";
-    private Category needs;
-    private Category regrets;
-    private Category wants;
-    private Savings savings;
-    private Goals goals;
+public class MenuBar extends JMenuBar implements ActionListener {
 
-    public MainMenu() {
-        JMenuBar menubar = new JMenuBar();
+    public MenuBar() {
         JMenu menu1 = new JMenu("Save to File");
         JMenu menu2 = new JMenu("Load a file");
         JMenuItem load = new JMenuItem("Load a file");
         JMenuItem save = new JMenuItem("Save to file");
         JMenuItem saveAs = new JMenuItem("Save as a new file");
-        menubar.add(menu1);
-        menubar.add(menu2);
+        add(menu1);
+        add(menu2);
         menu1.add(save);
         menu1.add(saveAs);
         menu2.add(load);
@@ -47,30 +35,6 @@ public class MainMenu extends JMenuBar implements ActionListener {
         saveAs.addActionListener(this);
     }
 
-    // MODIFIES: this
-    // EFFECTS: initializes a empty budget tracker
-    private void init() {
-        needs = new Needs();
-        regrets = new Regrets();
-        wants = new Wants();
-        savings = new Savings();
-        goals = new Goals();
-    }
-
-    // MODIFIES: this
-    // EFFECTS: loads categories, savings, and goals from BUDGET_FILE, if that file exists;
-    // otherwise initializes accounts with default values
-    private void loadAccounts() {
-        try {
-            needs = Reader.readNeeds(new File(budgetFile));
-            regrets = Reader.readRegrets(new File(budgetFile));
-            wants = Reader.readWants(new File(budgetFile));
-            savings = Reader.readSavings(new File(budgetFile));
-            goals = Reader.readGoals(new File(budgetFile));
-        } catch (IOException e) {
-            init();
-        }
-    }
 
 //    MODIFIES: this
 //    EFFECTS: if the menu bar called has the command "save" save data to default file
@@ -92,46 +56,57 @@ public class MainMenu extends JMenuBar implements ActionListener {
     //MODIFIES: this
     //EFFECTS; Save current file as a new txt file and temporary change default file to this new file
     private void saveAFile() {
-        JFileChooser saveFile = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
-        saveFile.setDialogTitle("Save this file as a txt file");
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("TEXT FILES", "txt", "text");
-        saveFile.setFileFilter(filter);
+        JFileChooser saveFile = properlySetUpFileChooser("Save this file as a txt file");
         int returnValue = saveFile.showSaveDialog(this);
         if (returnValue == JFileChooser.APPROVE_OPTION) {
             File file = new File(saveFile.getSelectedFile() + ".txt");
             try {
                 Writer writer = new Writer(file);
-                writer.write(needs);
-                writer.write(regrets);
-                writer.write(wants);
-                writer.write(savings);
-                writer.write(goals);
+                try {
+                    writer.write(GuiData.getCategory("needs"));
+                    writer.write(GuiData.getCategory("regrets"));
+                    writer.write(GuiData.getCategory("wants"));
+                } catch (CategoryInvalidException e2) {
+                    e2.printStackTrace();
+                }
+                writer.write(GuiData.getSavings());
+                writer.write(GuiData.getGoals());
                 writer.close();
-            } catch (FileNotFoundException e) {
+            } catch (Exception e) {
                 String message = "Unable to save to " + file.getAbsolutePath();
                 JOptionPane.showMessageDialog(new JFrame(), message, "Error", JOptionPane.ERROR_MESSAGE);
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
             }
         }
+    }
+
+    //EFFECTS: create a new JFileChooser that is properly set up to accept a file that matches the data type for this
+    //         app
+    private JFileChooser properlySetUpFileChooser(String s) {
+        JFileChooser saveFile = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+        saveFile.setDialogTitle(s);
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("TEXT FILES", "txt", "text");
+        saveFile.setFileFilter(filter);
+        return  saveFile;
     }
 
     //MODIFIES: this
     //EFFECTS: Load a new file and temporary set the default file to the given file
     private void loadAFile() {
-        JFileChooser loadFile = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("TEXT FILES", "txt", "text");
-        loadFile.setFileFilter(filter);
+        JFileChooser loadFile = properlySetUpFileChooser("Load this new txt file that matches the app");
         int returnValue = loadFile.showOpenDialog(this);
         if (returnValue == JFileChooser.APPROVE_OPTION) {
             File selectedFile = loadFile.getSelectedFile();
             try {
-                needs = Reader.readNeeds(selectedFile);
-                regrets = Reader.readRegrets(selectedFile);
-                wants = Reader.readWants(selectedFile);
-                savings = Reader.readSavings(selectedFile);
-                goals = Reader.readGoals(selectedFile);
-                budgetFile = selectedFile.getAbsolutePath();
+                try {
+                    GuiData.setCategory("needs", Reader.readNeeds(selectedFile));
+                    GuiData.setCategory("regrets", Reader.readRegrets(selectedFile));
+                    GuiData.setCategory("wants", Reader.readRegrets(selectedFile));
+                } catch (CategoryInvalidException e2) {
+                    e2.printStackTrace();
+                }
+                GuiData.setSavings(Reader.readSavings(selectedFile));
+                GuiData.setGoals(Reader.readGoals(selectedFile));
+                GuiData.setFilePath(selectedFile.getAbsolutePath());
             } catch (IOException e) {
                 String message = "Not a valid formatted file";
                 JOptionPane.showMessageDialog(new JFrame(), message, "Error", JOptionPane.ERROR_MESSAGE);
@@ -144,16 +119,20 @@ public class MainMenu extends JMenuBar implements ActionListener {
     // EFFECTS: saves state of Categories, Savings, and Goals to BUDGET_FILE
     public void saveAccounts() {
         try {
-            Writer writer = new Writer(new File(budgetFile));
-            writer.write(needs);
-            writer.write(regrets);
-            writer.write(wants);
-            writer.write(savings);
-            writer.write(goals);
+            Writer writer = new Writer(new File(GuiData.getBudgetFile()));
+            try {
+                writer.write(GuiData.getCategory("needs"));
+                writer.write(GuiData.getCategory("regrets"));
+                writer.write(GuiData.getCategory("wants"));
+            } catch (CategoryInvalidException e2) {
+                e2.printStackTrace();
+            }
+            writer.write(GuiData.getSavings());
+            writer.write(GuiData.getGoals());
             writer.close();
-            System.out.println("Purchases, Savings and Goals are saved to " + budgetFile);
+            System.out.println("Purchases, Savings and Goals are saved to " + GuiData.getBudgetFile());
         } catch (FileNotFoundException e) {
-            System.out.println("Unable to save to " + budgetFile);
+            System.out.println("Unable to save to " + GuiData.getBudgetFile());
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             // this is due to a programming error

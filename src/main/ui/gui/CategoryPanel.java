@@ -117,7 +117,7 @@ public class CategoryPanel extends JPanel {
     public void addToCat(String n, Double c, String cat) {
         Purchase p = new Purchase(n, c);
         try {
-            Category placeholderCat = MainFrame.getInstance().getCategory(cat.toLowerCase());
+            Category placeholderCat = GuiData.getCategory(cat);
             placeholderCat.addToCat(p);
             MainFrame.getInstance().categoryState();
         } catch (Exception e) {
@@ -153,7 +153,7 @@ public class CategoryPanel extends JPanel {
             String removerName = nameField.getText().toLowerCase();
             String removerCat = categoryField.getText().toLowerCase();
             try {
-                Category cat = MainFrame.getInstance().getCategory(removerCat);
+                Category cat = GuiData.getCategory(removerCat);
                 cat.removeNamedPurchase(removerName);
                 MainFrame.getInstance().categoryState();
             } catch (CategoryInvalidException e1) {
@@ -185,7 +185,7 @@ public class CategoryPanel extends JPanel {
         add(deleteAllButton, gc);
         deleteAllButton.addActionListener(e -> {
             try {
-                Category cat = MainFrame.getInstance().getCategory(categoryField.getText().toLowerCase());
+                Category cat = GuiData.getCategory(categoryField.getText().toLowerCase());
                 cat.clearList();
                 MainFrame.getInstance().categoryState();
             } catch (CategoryInvalidException e0) {

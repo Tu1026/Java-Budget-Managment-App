@@ -142,7 +142,7 @@ public class GoalsPanel extends JPanel {
     //EFFECTS: add a new goal to list of goal in the Main Frame file
     public void makeNewGoals(String n, Double c, Integer d) {
         Goal newGoal = new Goal(n, c, d);
-        MainFrame.getInstance().getGoals().addToGoals(newGoal);
+        GuiData.getGoals().addToGoals(newGoal);
     }
 
     //MODIFIES: this, MainFrame
@@ -162,7 +162,7 @@ public class GoalsPanel extends JPanel {
             if (!nameField.getText().equals("")) {
                 String remover = nameField.getText();
                 try {
-                    MainFrame.getInstance().getGoals().removeGivenGoal(remover);
+                    GuiData.getGoals().removeGivenGoal(remover);
                     MainFrame.getInstance().goalsState();
                 } catch (NameNotValidException e2) {
                     noSuchGoalError();
@@ -190,7 +190,7 @@ public class GoalsPanel extends JPanel {
         add(deleteFirstButton, gc);
         deleteFirstButton.addActionListener(e -> {
             try {
-                MainFrame.getInstance().getGoals().removeIthGoal(1);
+                GuiData.getGoals().removeIthGoal(1);
                 MainFrame.getInstance().goalsState();
             } catch (IndexOutOfBoundsException ex) {
                 //do nothing

@@ -120,7 +120,7 @@ public class SavingsPanel extends JPanel {
     //MODIFIES: this
     //EFFECTS: Perform the transaction for saving account
     public void doSavingTransaction(double m) {
-        if (!MainFrame.getInstance().getSavings().savingTransaction(m)) {
+        if (!GuiData.getSavings().savingTransaction(m)) {
             String message = "Cannot have negative balance";
             JOptionPane.showMessageDialog(new JFrame(), message, "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -129,7 +129,7 @@ public class SavingsPanel extends JPanel {
     //MODIFIES: this
     //EFFECTS: Increase the money in saving according to given interest rate
     public void doInterestRate(double i) {
-        MainFrame.getInstance().getSavings().savingInterests(i);
+        GuiData.getSavings().savingInterests(i);
     }
 
 }
