@@ -70,21 +70,22 @@ any of the methods. The tests to test out the respective exception thrown are al
 code and design if they are separated).
 ### Phase 4: Task 3
 - One of the places in my project that has poor cohesion is in the MainFrame class of my GUI. This class should only
-be accounting for constructing a Frame that has a proper size, and when trigger it loads on a new given panel without
-knowing the anything or operation about those panels. However, I was designing I accidentally designed the menu bars
-inside of the MainFrame class. The MainFrame class should not be responsible for menu bar, so I refactored the menu bar 
-and functionality that come with it out into their own class called MenuBar.
-- There is also too much coupling(Instead of downward coupling there is too much upward coupling) between all the GUIs
-in terms of the fields that they operate on. For example right now if I initiate the app will load the default file and
-the values contain in it will be the fields in MainFrame. The implication of this is that, whenever there is an 
-operation within the panels that wants to change the value in the file they have to access back up to the MainFrame.
-This also means that instead of letting the MainFrame be at
+be accounted for constructing a Frame that has a proper size, and when trigger it loads on a new given panel without
+knowing anything or any operation about those panels. However, I accidentally designed the menu bars
+inside of the MainFrame class. The MainFrame class should not be responsible for menu bar, so I refractored the menu bar 
+and the functionality that come with it out into their own class called MenuBar.
+- There is also too much coupling(Instead of downward coupling there is too much upward coupling/ which means poor
+cohesion in the MainFrame class as it shouldn't know about the data being operated on) between all the GUIs
+in terms of the fields that they operate on. For example right now if I initiate the app it will load the default file 
+and the values contain in it will be the fields in MainFrame. The implication of this is that, whenever there is an 
+operation within the panels that wants to change the value in the file they have to access back up to the MainFrame 
+again. This also means that instead of letting the MainFrame be at
 the top of the class chain and the panels below it have no knowledge of anything inside it, the panels now have to 
 refer back up to the MainFrame class to access the values every time.
 
 To deal with this coupling issue, I completed overhauled the way my GUI stores data by first creating a class called
-GuiData that store data as static fields and remove the data fields in the MainFrame class. I also changed every
-operation relating changing the data to happen with in the GuiData class, so the MainFrame class now has no knowledge
+GuiData that stores data as static fields and remove the data fields in the MainFrame class. I also make every
+data operation methods to happen within the GuiData class, so the MainFrame class now has no knowledge
 of what happens to the data.
 
 ***The UML class diagram for the overall project is added to the root of this project starter
