@@ -88,4 +88,4 @@ GuiData that stores data as static fields and remove the data fields in the Main
 data operation methods to happen within the GuiData class, so the MainFrame class now has no knowledge
 of what happens to the data.
 
-***The UML class diagram for the overall project is added to the root of this project starter
+***The UML class diagram for the overall project is added to the root of this project starter.
