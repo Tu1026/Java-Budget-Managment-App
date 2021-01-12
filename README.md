@@ -1,6 +1,6 @@
 # Budget Tracker
 
-![](project UML diagram.png)
+![](./project UML diagram.png)
 
 ## Overall Structure of the application
 
