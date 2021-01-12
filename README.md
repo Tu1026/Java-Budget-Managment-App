@@ -1,7 +1,11 @@
 # Budget Tracker
 
-### Achieve financial independence with just the tips of you fingers!
+![](project UML diagram.png)
 
+## Overall Structure of the application
+
+
+### Achieve financial independence with just the tips of you fingers!
 Cool features that it provides:
 - Keep track of you goals (cars, traveling, etc).
 - Daily reports and month reports of financial progress.
